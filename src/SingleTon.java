@@ -93,4 +93,8 @@ public class SingleTon {
     //======================= VARIABILI DI GIOCO==========================
     public int current_level = 1; //livello attuale (man mano difficile)
     public int score = 0; //score del player
+       
+    public final int ROWS = 31;
+    public final int COLS = 28;
+    public String[][] game_map = new String[ROWS][COLS];
 }

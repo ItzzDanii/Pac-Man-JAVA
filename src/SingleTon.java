@@ -1,4 +1,9 @@
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.GraphicsEnvironment;
 import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
@@ -8,6 +13,17 @@ public class SingleTon {
     private SingleTon(){
         this.score = 0;
         this.current_level = 1;
+
+        //Chiesto a chat come caricare un custom font
+        try {
+        customFont = Font.createFont(Font.TRUETYPE_FONT, 
+            new File("Font/Emulogic-zrEw.ttf"));
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+         ge.registerFont(customFont);
+        } catch (FontFormatException | IOException e) {
+            System.err.println("Errore nel caricamento del font Emulogic: " + e.getMessage());
+            customFont = new Font("Arial", Font.BOLD, 12); //Fallback
+    }
     }
 
     public static SingleTon getInstance() {
@@ -93,8 +109,13 @@ public class SingleTon {
     //======================= VARIABILI DI GIOCO==========================
     public int current_level = 1; //livello attuale (man mano difficile)
     public int score = 0; //score del player
+    public int max_score; //high score
        
     public final int ROWS = 31;
     public final int COLS = 28;
     public String[][] game_map = new String[ROWS][COLS];
+
+    public Font customFont = null;
+
+    public int pac_lifes; //vite
 }

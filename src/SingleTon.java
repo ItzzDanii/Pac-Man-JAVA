@@ -3,7 +3,9 @@ import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Scanner;
 
 import javax.swing.ImageIcon;
 
@@ -38,11 +40,21 @@ public class SingleTon {
         if(score > max_score) {
             max_score = score;
             newRecord = true;
+            saveMaxScore(max_score);
         } else {
             newRecord = false;
         }
     }    
-
+    //! Generato con ChatGPT per gestione file !
+    private void saveMaxScore(int maxScore) {
+        try {
+            FileWriter writer = new FileWriter("max_score.txt");
+            writer.write(Integer.toString(maxScore));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     //========================== IMMAGINI  PAC MAN ==========================
     public Image pac_left  = new ImageIcon("Images/PAC_MAN/pacman_left.png").getImage();

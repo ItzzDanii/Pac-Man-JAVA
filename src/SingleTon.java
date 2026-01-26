@@ -17,6 +17,7 @@ public class SingleTon {
         this.current_level = 1;
         this.pac_lifes = 3;
         this.file_max_score = "max_score.txt";
+        
 
         //Chiesto a chat come caricare un custom font
         try {
@@ -37,7 +38,7 @@ public class SingleTon {
         return instance;
     }
 
-    private void checkMaxScore() {
+    public void checkMaxScore() {
         if(score > max_score) {
             max_score = score;
             newRecord = true;
@@ -47,7 +48,7 @@ public class SingleTon {
         }
     }    
     //! Generato con ChatGPT per gestione file !
-    private void saveMaxScore(int maxScore) {
+    public void saveMaxScore(int maxScore) {
         try {
             FileWriter writer = new FileWriter(file_max_score);
             writer.write(Integer.toString(maxScore));
@@ -58,7 +59,7 @@ public class SingleTon {
     }
 
     //! Generato con ChatGPT per gestione file !
-    private int loadMaxScore() {
+    public int loadMaxScore() {
     try {
         File file = new File(file_max_score);
 

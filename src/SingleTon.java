@@ -13,6 +13,7 @@ public class SingleTon {
     private SingleTon(){
         this.score = 0;
         this.current_level = 1;
+        this.pac_lifes = 3;
 
         //Chiesto a chat come caricare un custom font
         try {
@@ -32,6 +33,16 @@ public class SingleTon {
         }
         return instance;
     }
+
+    private void checkMaxScore() {
+        if(score > max_score) {
+            max_score = score;
+            newRecord = true;
+        } else {
+            newRecord = false;
+        }
+    }    
+
 
     //========================== IMMAGINI  PAC MAN ==========================
     public Image pac_left  = new ImageIcon("Images/PAC_MAN/pacman_left.png").getImage();
@@ -110,6 +121,7 @@ public class SingleTon {
     public int current_level = 1; //livello attuale (man mano difficile)
     public int score = 0; //score del player
     public int max_score; //high score
+    public boolean newRecord = false; //new record?
        
     public final int ROWS = 31;
     public final int COLS = 28;

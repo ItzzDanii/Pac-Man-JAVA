@@ -1,3 +1,7 @@
+import java.awt.Color;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class Logica{
 //========================== FINESTRA ==========================
     public int screenW,screenH;
@@ -56,4 +60,41 @@ public class Logica{
      //========================== CLYDE - FANSTAMA ARANCIONE ==========================
     int clydeX,clydeY;
 
- }
+    public Logica(MyPanel panel,int screenW,int screenH){
+        this.pan = panel;
+        this.screenW = screenW;
+        this.screenH = screenH;
+    
+        this.isReady = true;
+        this.gameOver = false;
+        this.level_completed = false;
+
+        this.cell_width = (screenW/SingleTon.getInstance().COLS);
+        this.cell_heigth = (screenH/SingleTon.getInstance().ROWS);
+
+        this.ball_diam = cell_width/4;
+
+        this.pac_manX = 13;
+        this.pac_manY = 23;
+        this.dir = "dx";
+        
+        this.blinkyX = 14;
+        this.blinkyY = 11;
+        this.blinkyDirection = 0;
+
+        this.ghost_vel = 200;
+    }
+
+    // === GETTER ===
+    public int getScreenH(){return this.screenH;}
+    public int getScreenW(){return this.screenW;}
+    public MyPanel getPanel(){return this.pan;}
+    public int getPacX() {return this.pac_manX;}
+    public int getPacY() {return this.pac_manY;}
+    public int distXFinestra() {return screenW - (this.cell_width*SingleTon.getInstance().COLS);}
+    public int distYFinestra() {return screenH - (this.cell_heigth*SingleTon.getInstance().ROWS);}
+    public boolean isFirstGame(){return this.firstTime;}
+    public boolean isLvlCompleted(){return this.level_completed;}
+    public boolean isGameOver(){return this.gameOver;}
+
+}

@@ -81,6 +81,7 @@ public class SingleTon {
 }
 
     //========================== IMMAGINI  PAC MAN ==========================
+    public Image pac_man_CurrentImage; //imagien attuale
     public Image pac_left  = new ImageIcon("Images/PAC_MAN/pacman_left.png").getImage();
     public Image pac_right = new ImageIcon("Images/PAC_MAN/pacman_right.png").getImage();
     public Image pac_up    = new ImageIcon("Images/PAC_MAN/pacman_up.png").getImage();
@@ -92,6 +93,7 @@ public class SingleTon {
     public Image pac_down_closed = new ImageIcon("Images/PAC_MAN/pacman_down_closed.png").getImage();
 
     //========================== IMMAGINI  PINKY ==========================
+    public Image pinky_CurrentImage; //immagine attuale di pinky
     public Image pinky_left = new ImageIcon("Images/PINKY/pinky_left.png").getImage();
     public Image pinky_right = new ImageIcon("Images/PINKY/pinky_right.png").getImage();
     public Image pinky_up = new ImageIcon("Images/PINKY/pinky_up.png").getImage();
@@ -103,6 +105,7 @@ public class SingleTon {
     public Image pinky_down_2 = new ImageIcon("Images/PINKY/pinky_down2.png").getImage();
 
     //========================== IMMAGINI  BLINKY ==========================
+    public Image blinky_CurrentImage; //immagine attuale di blinky
     public Image blinky_left  = new ImageIcon("Images/BLINKY/blinky_left.png").getImage();
     public Image blinky_right = new ImageIcon("Images/BLINKY/blinky_right.png").getImage();
     public Image blinky_up    = new ImageIcon("Images/BLINKY/blinky_up.png").getImage();
@@ -114,6 +117,7 @@ public class SingleTon {
     public Image blinky_down_2 = new ImageIcon("Images/BLINKY/blinky_down2.png").getImage();
 
     //========================== IMMAGINI  INKY ==========================
+    public Image inky_CurrentImage; //immagine attuale di inky
     public Image inky_left = new ImageIcon("Images/INKY/inky_left.png").getImage();
     public Image inky_right = new ImageIcon("Images/INKY/inky_right.png").getImage();
     public Image inky_up = new ImageIcon("Images/INKY/inky_up.png").getImage();
@@ -125,6 +129,7 @@ public class SingleTon {
     public Image inky_down_2 = new ImageIcon("Images/INKY/inky_down_2.png").getImage();
 
     //========================== IMMAGINI  CLYDE ==========================
+    public Image clyde_CurrentImage; //immagine attuale di clyde
     public Image clyde_left = new ImageIcon("Images/CLYDE/clyde_left.png").getImage();
     public Image clyde_right = new ImageIcon("Images/CLYDE/clyde_right.png").getImage();
     public Image clyde_up = new ImageIcon("Images/CLYDE/clyde_up.png").getImage();

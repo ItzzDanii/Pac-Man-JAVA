@@ -16,6 +16,7 @@ public class SingleTon {
         this.score = 0;
         this.current_level = 1;
         this.pac_lifes = 3;
+        this.file_max_score = "max_score.txt";
 
         //Chiesto a chat come caricare un custom font
         try {
@@ -48,13 +49,36 @@ public class SingleTon {
     //! Generato con ChatGPT per gestione file !
     private void saveMaxScore(int maxScore) {
         try {
-            FileWriter writer = new FileWriter("max_score.txt");
+            FileWriter writer = new FileWriter(file_max_score);
             writer.write(Integer.toString(maxScore));
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+    //! Generato con ChatGPT per gestione file !
+    private int loadMaxScore() {
+    try {
+        File file = new File(file_max_score);
+
+        if (!file.exists()) {
+            try (FileWriter writer = new FileWriter(file)) {
+                writer.write("0");
+            }
+            return 0;
+        }
+
+        Scanner sc = new Scanner(file);
+        int max = sc.nextInt();
+        sc.close();
+        return max;
+
+    } catch (Exception e) {
+        e.printStackTrace();
+        return 0;
+    }
+}
 
     //========================== IMMAGINI  PAC MAN ==========================
     public Image pac_left  = new ImageIcon("Images/PAC_MAN/pacman_left.png").getImage();
@@ -130,8 +154,8 @@ public class SingleTon {
     public Sound powerSound = new Sound("SOUNDS/powerup.wav");
 
     //======================= VARIABILI DI GIOCO==========================
-    public int current_level = 1; //livello attuale (man mano difficile)
-    public int score = 0; //score del player
+    public int current_level; //livello attuale (man mano difficile)
+    public int score; //score del player
     public int max_score; //high score
     public boolean newRecord = false; //new record?
        
@@ -142,4 +166,6 @@ public class SingleTon {
     public Font customFont = null;
 
     public int pac_lifes; //vite
+
+    private String file_max_score = "max_score.txt";
 }

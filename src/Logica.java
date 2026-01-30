@@ -97,4 +97,10 @@ public class Logica{
     public boolean isLvlCompleted(){return this.level_completed;}
     public boolean isGameOver(){return this.gameOver;}
 
-}
+    // === SETTER ===
+    public void setPacX(int x) {this.pac_manX = x;}
+    public void setPacY(int y) {this.pac_manY = y;}
+    public void setLifes(int num){SingleTon.getInstance().pac_lifes = num;}
+    public void resetScore(){SingleTon.getInstance().score = 0;}
+    public void updateHighScore(){SingleTon.getInstance().checkMaxScore();}
+   }

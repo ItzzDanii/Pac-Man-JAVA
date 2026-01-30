@@ -1,0 +1,10 @@
+- EMPTY -> cella vuota 
+- BALL -> pallina da mangiare 
+- WALL -> muro 
+- PAC_MAN -> pac man 
+- CLYDE -> fanstama arancione 
+- INKY -> fantasma azzurro 
+- PINKY -> fantasma rosa 
+- BLINKY -> fantasma rosso 
+- DOOR -> porta della fantasma box 
+- POWER_UP -> pallina di invincibilità 

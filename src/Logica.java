@@ -127,4 +127,152 @@ public class Logica{
         }
     }
 }
+    public void initializeMap() {
+        if(isFirstGame() || isLvlCompleted()) //solo se prima parita o livello completato (dopo reset)
+        {
+            updateHighScore();
+            //riempo tutto di palline
+            for(int i=0;i<SingleTon.getInstance().ROWS;i++)
+            {
+                for(int j=0;j<SingleTon.getInstance().COLS;j++)
+                {
+                    SingleTon.getInstance().game_map[i][j] = "BALL";
+                }
+            }
+
+        //contorno solo muro
+       for(int rows = 0; rows < SingleTon.getInstance().ROWS; rows++) {
+        for(int columns = 0; columns < SingleTon.getInstance().COLS; columns++) {
+
+            if(rows==0 || rows == SingleTon.getInstance().ROWS-1)
+                SingleTon.getInstance().game_map[rows][columns] = "WALL";
+
+            if(columns==0 || columns==SingleTon.getInstance().COLS-1)
+                SingleTon.getInstance().game_map[rows][columns] = "WALL";
+        }
+    }
+
+    //altri elementi da aggiungere usando metodo placewall (lungo ma comodo):
+    //muri
+        placeWall(2, 2, 4, 3);
+
+        placeWall(7, 2, 5, 3);
+
+        placeWall(13, 1, 2, 4);
+
+        placeWall(16, 2, 5, 3);
+
+        placeWall(22, 2, 4, 3);
+
+        placeWall(2, 6, 4, 2);
+
+        placeWall(7, 6, 2, 8);
+        placeWall(9, 9, 3, 2);
+
+        placeWall(10, 6, 8, 2);
+        placeWall(13, 8, 2, 3);
+
+        placeWall(16, 9, 3, 2);
+        placeWall(19, 6, 2, 8);
+
+        placeWall(22, 6, 4, 2);
+
+        placeWall(1, 9, 5, 5);
+
+        placeWall(1, 15, 5, 5);
+
+        placeWall(7, 15, 2, 5);
+
+        placeWall(2, 21, 4, 2);
+        placeWall(4, 23, 2, 3);
+
+        placeWall(1, 24, 2, 2);
+
+        placeWall(2, 27, 10, 2);
+        placeWall(7, 24, 2, 3);
+
+        placeWall(7, 21, 5, 2);
+
+        placeWall(10, 24, 8, 2);
+        placeWall(13, 26, 2, 3);
+
+        placeWall(16, 27, 10, 2);
+        placeWall(19, 24, 2, 3);
+
+        placeWall(25, 24, 2, 2);
+
+        placeWall(22, 21, 4, 2);
+        placeWall(22, 23, 2, 3);
+
+        placeWall(16, 21, 5, 2);
+
+        placeWall(10, 18, 8, 2);
+        placeWall(13, 20, 2, 3);
+
+        placeWall(19, 15, 2, 5);
+
+        placeWall(22, 9, 5, 5);
+
+        placeWall(22, 15, 5, 5);
+
+        placeWall(10, 12, 3, 1);
+        placeWall(10, 12, 1, 4);
+        placeWall(10, 16, 8, 1);
+        placeWall(17, 12, 1, 4);
+        placeWall(15, 12, 3, 1);
+
+        //celle vuote
+        emptyCell(3, 3,2,1);
+        emptyCell(8,3,3,1);
+        emptyCell(17, 3, 3, 1);
+        emptyCell(23,3,2,1);
+
+        emptyCell(0,10,5,3);
+        emptyCell(0,16,5,3);
+
+        emptyCell(23,10,5,3);
+        emptyCell(23,16,5,3);
+
+        emptyCell(0, 14, 6, 1);
+        emptyCell(22, 14, 6, 1);
+
+        emptyCell(12, 9, 1, 3);
+        emptyCell(15, 9, 1, 3);
+
+        emptyCell(13, 11, 2, 5);
+        emptyCell(9, 11, 10, 1);
+        emptyCell(9, 11, 1, 9);
+        emptyCell(9, 17, 10, 1);
+
+        emptyCell(18, 11, 1, 9);
+
+        emptyCell(7, 14, 2, 1);
+        emptyCell(19, 14, 2, 1);
+
+        emptyCell(11, 13, 6, 3);
+
+        //porte della base dei fantasmi
+        SingleTon.getInstance().game_map[12][13] = "DOOR1";
+        SingleTon.getInstance().game_map[12][14] = "DOOR2";
+
+        //potenziamenti di pacman
+        SingleTon.getInstance().game_map[3][1] = "POWER_UP";
+        SingleTon.getInstance().game_map[3][26] = "POWER_UP";
+        SingleTon.getInstance().game_map[23][1] = "POWER_UP";
+        SingleTon.getInstance().game_map[23][26] = "POWER_UP";
+
+        //teletrasporti per pacman
+        SingleTon.getInstance().game_map[14][0] = "TELEPORT";
+        SingleTon.getInstance().game_map[14][27] = "TELEPORT_2";
+
+        //scritta ready per intro del gioco
+        SingleTon.getInstance().game_map[17][11] = "R";
+        SingleTon.getInstance().game_map[17][12] = "E";
+        SingleTon.getInstance().game_map[17][13] = "A";
+        SingleTon.getInstance().game_map[17][14] = "D";
+        SingleTon.getInstance().game_map[17][15] = "Y";
+        SingleTon.getInstance().game_map[17][16] = "!";
+    }
+    firstTime = false;
+}
 }

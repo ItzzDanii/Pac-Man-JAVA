@@ -103,4 +103,28 @@ public class Logica{
     public void setLifes(int num){SingleTon.getInstance().pac_lifes = num;}
     public void resetScore(){SingleTon.getInstance().score = 0;}
     public void updateHighScore(){SingleTon.getInstance().checkMaxScore();}
-   }
+    
+    // === METODI DI GIOCO ===
+    public void placeWall(int col,int row,int larghezza,int altezza)
+    {
+        int startcol = col;
+        for(int j=0;j<altezza;j++)
+        {  
+            for(int i = 0;i<larghezza;i++)
+            {
+                SingleTon.getInstance().game_map[row][col] = "WALL";
+                col++;
+            }
+            col=startcol;
+            row++;
+        }
+
+    }
+    public void emptyCell(int col, int row, int lung, int alt) {
+    for (int i = 0; i < alt; i++) {
+        for (int j = 0; j < lung; j++) {
+            SingleTon.getInstance().game_map[row + i][col + j] = "EMPTY";
+        }
+    }
+}
+}

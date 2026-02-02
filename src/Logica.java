@@ -388,4 +388,70 @@ public class Logica{
 
         eatBall();
     }
+
+    // === METODI DI BLINKY ===
+    public void animateBlinky() {
+        if(powered && powerSession > 1000) // in ms - 1000ms ciò all'inizio del potenziamento di pac man, diventa bianco-blu
+        {
+            if(blinkyAnimate)
+            SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().vul_ghost_blue_2;
+        }
+        else if(powered && powerSession < 7000) // se manca poco al termine del potenziamento di pac man, diventa bianco-rosso
+        {
+            if(blinkyAnimate)
+            SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_red;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().vul_ghost_red_2;
+        }
+        else if(blinkyDead)
+        {
+            switch (blinkyDirection) {
+                 case 0: //LEFT
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_left;
+                break;
+                
+            case 1: //UP
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_up;
+                break;
+
+            case 2: //RIGHT
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_right;
+                break;
+
+            case 3: //DOWN
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_down;
+                break;
+            }
+        }
+        else{
+         switch (blinkyDirection) {
+            case 0: //LEFT
+            if(blinkyAnimate)
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_left_2;
+                break;
+
+            case 1: //UP
+                if(blinkyAnimate)
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_up_2;
+                break;
+
+            case 2: //RIGHT
+                if(blinkyAnimate)
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_right_2;
+                break;
+
+            case 3: //DOWN
+                if(blinkyAnimate)
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down;
+            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_down_2;
+                break;
+        }
+        }
+
+        //alterno per animazione
+        blinkyAnimate = !blinkyAnimate; 
+    }
 }

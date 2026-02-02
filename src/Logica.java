@@ -594,6 +594,7 @@ public class Logica{
             pan.getGraphics().setColor(Color.WHITE);
             pan.getGraphics().drawString("200", blinkyX+5, blinkyY+5);
 
+            // essendo che muore, cambia skin
             switch(blinkyDirection) {
                 case 0: 
                     SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_left; 

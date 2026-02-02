@@ -275,4 +275,38 @@ public class Logica{
     }
     firstTime = false;
 }
+    
+    // === METODI DI PACMAN ===
+    public boolean canPlay() {
+            return !this.isReady;
+    }
+    public boolean canMove(String dir) {
+    //collisioni con muri e bordi finestra
+    switch (dir) {
+        case "sx":
+            if ((pac_manX - vel) < 0) return false; // se fuori dalla finestra non può muoversi
+            String cellSx = SingleTon.getInstance().game_map[pac_manY][pac_manX - vel];
+            return !cellSx.equals("WALL") && !cellSx.equals("DOOR1") && !cellSx.equals("DOOR2"); // se è un muro non può muoversi
+        
+            case "dx":
+            if ((pac_manX + vel) >= SingleTon.getInstance().COLS) return false;
+            String cellDx = SingleTon.getInstance().game_map[pac_manY][pac_manX + vel];
+            return !cellDx.equals("WALL") && !cellDx.equals("DOOR1") && !cellDx.equals("DOOR2");
+        
+            case "su":
+            if ((pac_manY - vel) < 0) return false;
+            String cellSu = SingleTon.getInstance().game_map[pac_manY - vel][pac_manX];
+            return !cellSu.equals("WALL") && !cellSu.equals("DOOR1") && !cellSu.equals("DOOR2");
+        
+            case "giu":
+            if ((pac_manY + vel) >= SingleTon.getInstance().ROWS) return false;
+            String cellGiu = SingleTon.getInstance().game_map[pac_manY + vel][pac_manX];
+
+            if (cellGiu.equals("WALL") || cellGiu.equals("DOOR1") || cellGiu.equals("DOOR2")) {
+                return false;
+            }
+            return true;
+            }
+            return false;
+}
 }

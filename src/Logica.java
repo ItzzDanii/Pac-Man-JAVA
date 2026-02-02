@@ -391,16 +391,16 @@ public class Logica{
 
     // === METODI DI BLINKY ===
     public void animateBlinky() {
-        if(powered && powerSession > 1000) // in ms - 1000ms ciò all'inizio del potenziamento di pac man, diventa bianco-blu
+        if(powered && powerSession > 1000) // in ms - 1000ms ovvero che all'inizio del potenziamento di pac man, diventa bianco-blu
         {
             if(blinkyAnimate)
-            SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
             else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().vul_ghost_blue_2;
         }
         else if(powered && powerSession < 7000) // se manca poco al termine del potenziamento di pac man, diventa bianco-rosso
         {
             if(blinkyAnimate)
-            SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_red;
+                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_red;
             else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().vul_ghost_red_2;
         }
         else if(blinkyDead)
@@ -409,7 +409,7 @@ public class Logica{
                  case 0: //LEFT
                 SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_left;
                 break;
-                
+
             case 1: //UP
                 SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_up;
                 break;
@@ -423,35 +423,157 @@ public class Logica{
                 break;
             }
         }
-        else{
-         switch (blinkyDirection) {
-            case 0: //LEFT
-            if(blinkyAnimate)
-                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
-            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_left_2;
-                break;
+        else {
+            switch (blinkyDirection) {
+                case 0: //LEFT
+                    if(blinkyAnimate)
+                        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
+                    else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_left_2;
+                    break;
 
-            case 1: //UP
-                if(blinkyAnimate)
-                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up;
-            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_up_2;
-                break;
+                case 1: //UP
+                    if(blinkyAnimate)
+                        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up;
+                    else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_up_2;
+                    break;
 
-            case 2: //RIGHT
-                if(blinkyAnimate)
-                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right;
-            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_right_2;
-                break;
+                case 2: //RIGHT
+                    if(blinkyAnimate)
+                        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right;
+                    else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_right_2;
+                    break;
 
-            case 3: //DOWN
-                if(blinkyAnimate)
-                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down;
-            else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_down_2;
-                break;
+                case 3: //DOWN
+                    if(blinkyAnimate)
+                        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down;
+                    else SingleTon.getInstance().blinky_CurrentImage =  SingleTon.getInstance().blinky_down_2;
+                    break;
+            }
+
+            //alterno per animazione
+            blinkyAnimate = !blinkyAnimate; 
         }
-        }
-
-        //alterno per animazione
-        blinkyAnimate = !blinkyAnimate; 
     }
+
+    //! Generato con ChatGPT algoritmo del fantasma !
+    public void moveBlinkyBFS(int targetX, int targetY) {
+    class Node { int x, y; Node parent; Node(int x,int y,Node p){this.x=x;this.y=y;parent=p;} }
+
+    boolean[][] visited = new boolean[SingleTon.getInstance().ROWS][SingleTon.getInstance().COLS];
+    Queue<Node> queue = new LinkedList<>();
+    queue.add(new Node(blinkyX, blinkyY, null));
+    visited[blinkyY][blinkyX] = true;
+
+    Node endNode = null;
+
+    while(!queue.isEmpty()){
+        Node current = queue.poll();
+        if(current.x == targetX && current.y == targetY){ endNode = current; break; }
+
+        String[] directions = {"su","giu","sx","dx"};
+        for(String dir : directions){
+            int nx = current.x;
+            int ny = current.y;
+
+            switch(dir){
+                case "su": 
+                    ny--; 
+                    break;
+
+                case "giu": 
+                    ny++; 
+                    break;
+
+                case "sx": 
+                    nx--; 
+                    break;
+
+                case "dx": 
+                    nx++;
+                    break;
+            }
+
+            if(nx >=0 && nx < SingleTon.getInstance().COLS && ny >=0 && ny < SingleTon.getInstance().ROWS && !visited[ny][nx]){
+                String cell = SingleTon.getInstance().game_map[ny][nx];
+                if(!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2")){
+                    visited[ny][nx] = true;
+                    queue.add(new Node(nx, ny, current));
+                }
+            }
+        }
+    }
+
+    if(endNode != null){
+        //Risaliamo il percorso fino alla prima mossa
+        Node moveNode = endNode;
+        while(moveNode.parent != null && moveNode.parent.parent != null){
+            moveNode = moveNode.parent;
+        }
+        //Esegui il movimento
+        if(moveNode.x > blinkyX){ blinkyX++; blinkyDirection = 2; }
+        if(moveNode.x < blinkyX){ blinkyX--; blinkyDirection = 0; }
+        if(moveNode.y > blinkyY){ blinkyY++; blinkyDirection = 3; }
+        if(moveNode.y < blinkyY){ blinkyY--; blinkyDirection = 1; }
+
+        animateBlinky();
+    }
+}
+    
+    //! Generato con ChatGPT algoritmo del fantasma !
+    public void moveBlinky(boolean scatterMode) {
+        float currentSpeed; //1 = normale, 2 = più lento (quando si potenzia pacman)
+
+        if (blinkyDead) {
+            currentSpeed = 1; //velocità normale quando morto (torna alla base)
+        } else {
+            if(powered) currentSpeed = 2;
+            else currentSpeed = 1; //2 = lento quando powered, 1 = normale
+        }
+
+        blinkyMoveCounter++;
+        if (blinkyMoveCounter < currentSpeed) return;
+        blinkyMoveCounter = 0;
+
+        int targetX, targetY;
+
+        if (blinkyDead) {
+            targetX = 13; targetY = 11;
+        } else if (powered) {
+            //Fuga da Pac-Man
+            int maxDist = -1;
+            int farX = blinkyX;
+            int farY = blinkyY;
+            for (int y = 0; y < SingleTon.getInstance().ROWS; y++) {
+                for (int x = 0; x < SingleTon.getInstance().COLS; x++) {
+                    String cell = SingleTon.getInstance().game_map[y][x];
+                    if (!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2")) {
+                        int dist = Math.abs(x - pac_manX) + Math.abs(y - pac_manY);
+                        if (dist > maxDist) { maxDist = dist; farX = x; farY = y; }
+                    }
+                }
+            }
+            targetX = farX;
+            targetY = farY;
+        } else if (scatterMode) {
+            targetX = SingleTon.getInstance().COLS - 1; targetY = 0;
+        } else {
+            targetX = pac_manX; targetY = pac_manY;
+        }
+
+        moveBlinkyBFS(targetX, targetY);
+
+        //Se Blinky è morto e ha raggiunto la base, resuscita
+        if (blinkyDead && blinkyX == 13 && blinkyY == 11) {
+            blinkyDead = false;
+            powered = false; //opzionale, così non scappa subito
+
+        //Ripristina immagine normale in base alla direzione
+        switch (blinkyDirection) {
+            case 0: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left; break;
+            case 1: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up; break;
+            case 2: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right; break;
+            case 3: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down; break;
+        }
+    }
+}
 }

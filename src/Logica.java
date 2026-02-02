@@ -576,4 +576,48 @@ public class Logica{
         }
     }
 }
+
+    public void checkBlinkyCollision() {
+        if(blinkyX == pac_manX && blinkyY == pac_manY) {
+            if(powered && !blinkyDead) { 
+            //mangiato da pacman
+            SingleTon.getInstance().eat_ghost.play(); //suono fantasma mangiato
+            SingleTon.getInstance().score+=200; //guadagni points
+            blinkyDead = true; //fantasma morto
+            
+            //coordinate dello score mangiato da visualizzare
+            pointsX = blinkyX;
+            pointsY = blinkyY;
+            pointsTimer = 20;
+
+            // disegna score del fantasma mangiato
+            pan.getGraphics().setColor(Color.WHITE);
+            pan.getGraphics().drawString("200", blinkyX+5, blinkyY+5);
+
+            switch(blinkyDirection) {
+                case 0: 
+                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_left; 
+                    break;
+
+                case 1: 
+                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_up; 
+                    break;
+
+                case 2: 
+                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_right; 
+                    break;
+
+                case 3: 
+                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_down; 
+                    break;
+            }
+            return;
+        } else if(!blinkyDead && blinkyX == pac_manX && blinkyY == pac_manY && !powered) {
+            //fantasma uccide pacman
+            pacmanDead = true;
+            SingleTon.getInstance().pac_lifes-=1;
+            if(SingleTon.getInstance().pac_lifes <= 0) gameOver = true;
+        }
+    }
+}
 }

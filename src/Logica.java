@@ -309,4 +309,8 @@ public class Logica{
             }
             return false;
 }
+    public void changeDir(String nuovaDir) {
+         if (!canMove(nuovaDir)) return; //se non si può muovere
+         else dir = nuovaDir;
+    }
 }

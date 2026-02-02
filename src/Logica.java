@@ -309,8 +309,81 @@ public class Logica{
             }
             return false;
 }
+    
     public void changeDir(String nuovaDir) {
          if (!canMove(nuovaDir)) return; //se non si può muovere
          else dir = nuovaDir;
+    }
+    
+    public void eatBall() {
+    //cella in cui c'è attuamlente pacman
+    String cell = SingleTon.getInstance().game_map[pac_manY][pac_manX];
+    
+    if(cell.equals("BALL")){
+        SingleTon.getInstance().eat_sound.play();
+        emptyCell(pac_manX,pac_manY,1,1);
+        SingleTon.getInstance().score+=10;
+    }
+    
+    if(cell.equals("POWER_UP")) {
+        SingleTon.getInstance().score += 50;
+        emptyCell(pac_manX, pac_manY, 1, 1);
+    }
+}
+    
+    public void movePacman() {
+    if (!canMove(dir)) return; // se non si può muovere
+    if(isGameOver()|| isLvlCompleted()) return; // se gameover o livello completato
+    if(SingleTon.getInstance().pac_lifes<=0){ //se muore
+        gameOver = true;
+        level_completed = false;
+        return;
+    }
+    
+    switch (dir) {
+        case "sx":
+            pac_manX-=vel;
+            // animazione della bocca
+            if (mouthOpen)
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_left;
+            else
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_left_closed;
+            break;
+
+        case "dx":
+            pac_manX+=vel;
+            if (mouthOpen)
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
+            else
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right_closed;
+            break;
+
+        case "su":
+            pac_manY-=vel;
+            if (mouthOpen)
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_up;
+            else
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_up_closed;
+            break;
+
+        case "giu":
+            pac_manY+=vel;
+            if (mouthOpen)
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_down;
+            else
+                SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_down_closed;
+            break;
+    }
+
+    // alterno per animazione bocca
+    mouthOpen = !mouthOpen;
+    
+    if(pac_manX == 0 && pac_manY == 14)
+        pac_manX = 26;
+
+    if(pac_manX == 27 && pac_manY == 14)
+        pac_manX = 1;
+
+        eatBall();
     }
 }

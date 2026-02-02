@@ -622,3 +622,72 @@ public class Logica{
     }
 }
 }
+
+    public void resetPositions() {
+        //intro del gioco
+        if(isLvlCompleted() || isFirstGame() || pacmanDead){
+
+        SingleTon.getInstance().powerSound.stop(); // ferma tutti potenziamenti di pacman
+
+        //reinizializza il gioco
+        pacmanDead=false;
+        isReady = true;
+        introPlayed = false;
+
+        // posuizione iniziale di pacman
+        pac_manX = 13;
+        pac_manY = 23;
+
+        if (isLvlCompleted()) {
+            powered = false;
+            powerSession = 0;
+            if(pUpThread != null) {
+                pUpThread.session = 0;
+                SingleTon.getInstance().powerSound.stop();
+                pUpThread.stopThread();
+        }
+            blinkyDead = false;
+        }
+    
+        // Imposta come direzione di default di pacman a destra
+        SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
+        dir = "dx";
+
+        //posizione Blinky
+        blinkyX = 14;
+        blinkyY = 11;
+        blinkyDead = false;
+
+        // imposta direzione default di blinky a sinistra
+        blinkyDirection = 0;
+        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
+
+        powered = false;
+        gameOver = false;
+
+        initializeMap();
+        pan.repaint();
+
+        //bisogna aspettare intro per abilitare input WASD
+        pan.setFocusable(false);
+
+        if (isGameOver()) {
+        SingleTon.getInstance().intro.stop();
+        return;        
+        }
+            // parte intro che dura 5000 ms (5s)
+            SingleTon.getInstance().intro.play(); //parte musica intro
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {}
+
+            //fine intro
+            isReady = false;
+
+            //abilita input WASD
+            pan.setFocusable(true);
+            pan.requestFocusInWindow();
+        }
+    }
+
+}

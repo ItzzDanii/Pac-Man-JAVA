@@ -704,4 +704,12 @@ public class Logica{
             }
         }
 }
+
+    public void levelCompleted() {
+        if(isLvlCompleted()) {
+        SingleTon.getInstance().current_level++;
+        resetPositions();
+        initializeMap();
+        }
+    }
 }

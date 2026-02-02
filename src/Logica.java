@@ -326,6 +326,8 @@ public class Logica{
     }
     
     if(cell.equals("POWER_UP")) {
+        pUpThread =  new PowerUpThread(pan, 8500);
+        pUpThread.start(); //avvia thread di potenziamento
         SingleTon.getInstance().score += 50;
         emptyCell(pac_manX, pac_manY, 1, 1);
     }

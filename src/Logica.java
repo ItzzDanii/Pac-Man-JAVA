@@ -696,7 +696,8 @@ public class Logica{
         for(int j = 0; j < SingleTon.getInstance().ROWS; j++) {
             for(int i = 0; i < SingleTon.getInstance().COLS; i++) {
                 // se non c'è niente, livello completato
-                if(SingleTon.getInstance().game_map[j][i].equals("BALL") || SingleTon.getInstance().game_map[j][i].equals("POWER_UP")) {
+                if("BALL".equals(SingleTon.getInstance().game_map[j][i]) || 
+                    "POWER_UP".equals(SingleTon.getInstance().game_map[j][i])) {
                     level_completed = false;
                     return;
                 }

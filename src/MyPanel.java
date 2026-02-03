@@ -1,0 +1,36 @@
+import javax.swing.JPanel;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+class MyPanel extends JPanel {
+
+    final int screenW = 500,screenH = 500;
+    Logica game_logic = new Logica(this, screenW, screenH);
+
+    public MyPanel() {
+        setBorder(BorderFactory.createLineBorder(Color.black)); 
+    }
+
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(250,200);
+    }
+
+    @Override
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);       
+    }  
+
+    // fa ripartire tutto (dopo game over)
+    public void rematch(){
+
+    }
+
+    // chiude finestra
+    public void close(){
+
+    }
+}

@@ -621,7 +621,6 @@ public class Logica{
         }
     }
 }
-}
 
     public void resetPositions() {
         //intro del gioco

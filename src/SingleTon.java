@@ -22,7 +22,7 @@ public class SingleTon {
         //Chiesto a chat come caricare un custom font
         try {
         customFont = Font.createFont(Font.TRUETYPE_FONT, 
-            new File("Font/Emulogic-zrEw.ttf"));
+            new File("font/Emulogic-zrEw.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
          ge.registerFont(customFont);
         } catch (FontFormatException | IOException e) {

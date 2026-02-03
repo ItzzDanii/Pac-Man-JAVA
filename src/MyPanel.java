@@ -6,7 +6,10 @@ import java.awt.Graphics;
 
 class MyPanel extends JPanel {
 
-    final int screenW = 500,screenH = 500;
+    //dimensioni finestra
+    final int screenW = 900; //900x1000
+    final int screenH = 1000;
+
     Logica game_logic = new Logica(this, screenW, screenH);
 
     public MyPanel() {
@@ -21,7 +24,7 @@ class MyPanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);       
+        super.paintComponent(g);    
     }  
 
     // fa ripartire tutto (dopo game over)

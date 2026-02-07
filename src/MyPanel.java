@@ -155,18 +155,7 @@ class MyPanel extends JPanel {
         if (pacmanThread != null) pacmanThread.stopThread();
         if (blinkyThread != null) blinkyThread.stopThread();
 
-        switch (SingleTon.getInstance().current_level) {
-            case 1:
-                blinkyThread = new BlinkyThread(this, 160);
-                break;
-
-            case 2:
-                blinkyThread = new BlinkyThread(this, 200);
-                break;
-        
-            default:
-                break;
-        }
+        blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (20*SingleTon.getInstance().current_level));
         
         pacmanThread = new PacManThread(this, 180);
         pacmanThread.start();
@@ -186,14 +175,14 @@ class MyPanel extends JPanel {
         }
 
         if(blinkyThread==null){
-            blinkyThread = new BlinkyThread(this, game_logic.ghost_vel);
+            blinkyThread = new BlinkyThread(this,SingleTon.getInstance().ghost_vel);
             blinkyThread.start();
         }
     }
 
     public void levelUp() {
-        game_logic.ghost_vel -= 50;
-        if (game_logic.ghost_vel < 50) game_logic.ghost_vel = 50;
+        SingleTon.getInstance().ghost_vel -= 50;
+        if (SingleTon.getInstance().ghost_vel < 50) SingleTon.getInstance().ghost_vel = 50;
 
         if (blinkyThread != null) blinkyThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
@@ -202,7 +191,7 @@ class MyPanel extends JPanel {
         game_logic.initializeMap();
 
         pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
-        blinkyThread = new BlinkyThread(this, game_logic.ghost_vel);
+        blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel);
 
         pacmanThread.start();
         blinkyThread.start();

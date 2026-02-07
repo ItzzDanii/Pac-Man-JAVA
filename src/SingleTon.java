@@ -18,6 +18,7 @@ public class SingleTon {
         this.pac_lifes = 3;
         this.file_max_score = "max_score.txt";
         this.pac_vel = 180; 
+        this.ghost_vel = 200;
 
         //Chiesto a chat come caricare un custom font
         try {
@@ -178,6 +179,7 @@ public class SingleTon {
 
     public int pac_lifes; //vite
     public int pac_vel;
+    public int ghost_vel;
 
     private String file_max_score = "max_score.txt";
 }

@@ -81,8 +81,6 @@ public class Logica{
         this.blinkyX = 14;
         this.blinkyY = 11;
         this.blinkyDirection = 0;
-
-        this.ghost_vel = 200;
     }
 
     // === GETTER ===

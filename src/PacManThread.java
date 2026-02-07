@@ -1,22 +1,33 @@
 public class PacManThread extends Thread{
     MyPanel pan;
+    int delay;
     private Logica logica;
+    boolean running = true;
 
-    public PacManThread(MyPanel p){
+    public PacManThread(MyPanel p,int ms){
         this.pan = p;
+        this.delay = ms;
         this.logica = p.game_logic;
+        running = true;
     }
 
     @Override
     public void run() {
-        while (true) {
-            logica.movePacman();
-            pan.repaint();
+        while (running) {
+            if(logica.isReady && !logica.isGameOver()){
+                logica.movePacman();
+                pan.repaint();
+            }
             try {
-                sleep(50);
+                sleep(delay);
             } catch (Exception e) {
-                // TODO: handle exception
+                running = false;
             }
         }
+    }
+
+    public void stopThread() {
+        running = false;
+        this.interrupt();
     }
 }

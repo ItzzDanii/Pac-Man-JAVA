@@ -81,10 +81,11 @@ public class SingleTon {
     }
 }
 
-    public void initPacManImage(){
+    public void initImages(){
         this.pac_man_CurrentImage = this.pac_right;
+        this.blinky_CurrentImage = this.blinky_right;
     }
-    
+
     //========================== IMMAGINI  PAC MAN ==========================
     public Image pac_man_CurrentImage = null; //immagine attuale
     public Image pac_left  = new ImageIcon("img/PAC_MAN/pacman_left.png").getImage();

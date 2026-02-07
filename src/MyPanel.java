@@ -13,9 +13,10 @@ class MyPanel extends JPanel {
     Logica game_logic = new Logica(this, screenW, screenH);
     Grafica game_graphic = new Grafica(this, screenW, screenH, game_logic);
 
-    PacManThread pacThread = new PacManThread(this);
+    PacManThread pacThread = new PacManThread(this,50);
 
     public MyPanel() {
+        addKeyListener(new MyKeyboardAdapter(this));
         setBorder(BorderFactory.createLineBorder(Color.black)); 
         game_logic.initializeMap();
         SingleTon.getInstance().initImages();

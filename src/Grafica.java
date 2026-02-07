@@ -34,7 +34,8 @@ public class Grafica {
                         case "EMPTY":
                             g.setColor(Color.BLACK);
                             g.fillRect(x, y, cellW, cellH);
-
+                            break;
+                            
                         case "WALL":
                             g.setColor(cell_border_color);
                             g.drawRect(x, y, cellW, cellH);
@@ -72,6 +73,11 @@ public class Grafica {
 
                         default:
                             break;
+                    }
+                    
+                    //disegna pacman
+                    if (i == logic.pac_manY && j == logic.pac_manX) {
+                        g.drawImage(SingleTon.getInstance().pac_man_CurrentImage, x, y, cellW, cellH, null);
                     }
                 }
             }

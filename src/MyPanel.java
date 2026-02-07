@@ -16,6 +16,7 @@ class MyPanel extends JPanel {
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black)); 
         game_logic.initializeMap();
+        SingleTon.getInstance().initPacManImage();
     }
 
 

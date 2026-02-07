@@ -1,10 +1,10 @@
-public class ThreadBlinky extends Thread {
+public class BlinkyThread extends Thread {
     private final MyPanel pannello;
     private final int delay;
     private boolean running = true;
     private Logica logica;
 
-    public ThreadBlinky(MyPanel pannello, int delay) {
+    public BlinkyThread(MyPanel pannello, int delay) {
         this.pannello = pannello;
         this.delay = delay;
         this.logica = pannello.game_logic;

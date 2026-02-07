@@ -24,6 +24,7 @@ public class PowerUpThread extends Thread {
                 if (!running) return;
                 logica.powered = true;
                 SingleTon.getInstance().powerSound.play();
+                SingleTon.getInstance().pac_vel = 50;
                 pan.repaint();
         }
 
@@ -37,6 +38,7 @@ public class PowerUpThread extends Thread {
         if (running && session == logica.powerSession) {
                 if (!running) return;
                 logica.powered = false;
+                SingleTon.getInstance().pac_vel = 120;
                 SingleTon.getInstance().powerSound.stop();
                 pan.repaint();
         }

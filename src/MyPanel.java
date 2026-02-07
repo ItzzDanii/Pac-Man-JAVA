@@ -93,7 +93,7 @@ class MyPanel extends JPanel {
             
             String mess_score = "";
 
-            if(SingleTon.getInstance().newRecord)
+            if(SingleTon.getInstance().score >= SingleTon.getInstance().max_score)
                 mess_score = "New max score: "+Integer.toString(SingleTon.getInstance().loadMaxScore());
             else if(!SingleTon.getInstance().newRecord)
                 mess_score = "Score: "+Integer.toString(SingleTon.getInstance().score);

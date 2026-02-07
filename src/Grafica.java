@@ -35,7 +35,7 @@ public class Grafica {
                             g.setColor(Color.BLACK);
                             g.fillRect(x, y, cellW, cellH);
                             break;
-                            
+
                         case "WALL":
                             g.setColor(cell_border_color);
                             g.drawRect(x, y, cellW, cellH);
@@ -78,6 +78,10 @@ public class Grafica {
                     //disegna pacman
                     if (i == logic.pac_manY && j == logic.pac_manX) {
                         g.drawImage(SingleTon.getInstance().pac_man_CurrentImage, x, y, cellW, cellH, null);
+                    }
+
+                    if(i == logic.blinkyX && j == logic.blinkyY){
+                        g.drawImage(SingleTon.getInstance().blinky_CurrentImage,x,y,cellW,cellH,null);
                     }
                 }
             }

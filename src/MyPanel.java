@@ -16,9 +16,8 @@ class MyPanel extends JPanel {
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black)); 
         game_logic.initializeMap();
-        SingleTon.getInstance().initPacManImage();
+        SingleTon.getInstance().initImages();
     }
-
 
     @Override
     public Dimension getPreferredSize() {

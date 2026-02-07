@@ -34,6 +34,7 @@ class MyPanel extends JPanel {
     IntroThread introThread;
     PacManThread pacmanThread;
     BlinkyThread blinkyThread;
+    AnimateGameThread animateThread = new AnimateGameThread(this,500);
 
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black));
@@ -47,6 +48,7 @@ class MyPanel extends JPanel {
         //avvia il thread dell'intro
         introThread = new IntroThread(this, 5000); // 5 secondi di intro
         introThread.start();
+        
         }
 
         //carica font

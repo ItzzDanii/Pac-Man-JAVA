@@ -11,6 +11,7 @@ public class IntroThread extends Thread {
     @Override
     public void run() {
         if(running)
+            pannello.animateThread.start();
             pannello.setFocusable(false);
         try {
             sleep(delay);

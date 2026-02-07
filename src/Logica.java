@@ -125,6 +125,7 @@ public class Logica{
         }
     }
 }
+
     public void initializeMap() {
         if(isFirstGame() || isLvlCompleted()) //solo se prima parita o livello completato (dopo reset)
         {
@@ -274,6 +275,19 @@ public class Logica{
     firstTime = false;
 }
     
+    public int numeroPalle(){
+        int num = 0;
+         for(int i=0;i<SingleTon.getInstance().ROWS;i++)
+            {
+                for(int j=0;j<SingleTon.getInstance().COLS;j++)
+                {
+                    if(SingleTon.getInstance().game_map[i][j].equals("BALL"))
+                        num++;
+                }
+            }
+        
+        return num;
+    }
     // === METODI DI PACMAN ===
     public boolean canPlay() {
             return !this.isReady;

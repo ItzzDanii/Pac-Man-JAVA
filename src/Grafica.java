@@ -8,9 +8,10 @@ public class Grafica {
     Logica logic;
     
     // Colore degli elementi/HUD personalizzabili
-    Color text_color = new Color(255,255,255,255);
-    Color ready_color = new Color(247, 184, 1);
-    Color cell_fill_color = new Color(33, 158, 188); //colori della cella
+    Color UPscore = new Color(255,255,255,255); // hud
+    Color highscore = new Color(255,255,255,255);
+    Color ready_color = new Color(247, 184, 1); // ready text
+    Color cell_fill_color = new Color(0, 78, 137); //colori della cella
     Color ball_fill_color = new Color(241, 135, 1),ball_border_color = new Color(243, 91, 4); //colori della pallina
 
     //========================== METODI ==========================
@@ -46,15 +47,17 @@ public class Grafica {
             //custom font - scritta nome player: "1UP"
             Font sizeFont = SingleTon.getInstance().customFont.deriveFont(Font.BOLD, (float)(logic.cell_heigth-10));
             g.setFont(sizeFont);
-            g.setColor(text_color);
+            g.setColor(UPscore);
             g.drawString("1UP",availableWidth/4,(marginTop-45));
 
             //scritta score player
             String mess_score = Integer.toString(SingleTon.getInstance().score);
+            
             g.drawString(mess_score,(availableWidth/5)+40,(marginTop-10));
 
             //scritta high score
             logic.updateHighScore();
+            g.setColor(highscore);
             g.drawString("HIGH SCORE", availableWidth/2, (marginTop-45));
             g.drawString(Integer.toString(SingleTon.getInstance().max_score),availableWidth/2 + 50, (marginTop-15));
 

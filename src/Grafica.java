@@ -7,9 +7,11 @@ public class Grafica {
     public int screenW,screenH;
     Logica logic;
     
-    Color cell_fill_color = new Color(53, 48, 148,255),cell_border_color = new Color(18, 16, 67,255); //colori della cella
-
-    Color ball_fill_color = new Color(240, 114, 37,255),ball_border_color = new Color(44, 22, 12,255); //colori della pallina
+    // Colore degli elementi/HUD personalizzabili
+    Color text_color = new Color(255,255,255,255);
+    Color ready_color = new Color(247, 184, 1);
+    Color cell_fill_color = new Color(33, 158, 188); //colori della cella
+    Color ball_fill_color = new Color(241, 135, 1),ball_border_color = new Color(243, 91, 4); //colori della pallina
 
     //========================== METODI ==========================
     public Grafica(Logica logica) {
@@ -44,7 +46,7 @@ public class Grafica {
             //custom font - scritta nome player: "1UP"
             Font sizeFont = SingleTon.getInstance().customFont.deriveFont(Font.BOLD, (float)(logic.cell_heigth-10));
             g.setFont(sizeFont);
-            g.setColor(Color.WHITE);
+            g.setColor(text_color);
             g.drawString("1UP",availableWidth/4,(marginTop-45));
 
             //scritta score player
@@ -71,8 +73,6 @@ public class Grafica {
 
                     switch(SingleTon.getInstance().game_map[i][j]) {
                         case "WALL":
-                            g.setColor(cell_border_color);
-                            g.drawRect(x, y, blockW, blockH);
                             g.setColor(cell_fill_color);
                             g.fillRect(x, y, blockW, blockH);
                             break;
@@ -186,7 +186,7 @@ public class Grafica {
             logic.introPlayed = true;
         }
 
-        g.setColor(Color.YELLOW); 
+        g.setColor(ready_color); 
 
         Font sizeFont = SingleTon.getInstance().customFont.deriveFont(Font.BOLD, (float)(logic.cell_heigth-10));
         g.setFont(sizeFont); 

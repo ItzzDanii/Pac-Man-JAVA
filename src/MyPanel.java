@@ -15,6 +15,7 @@ class MyPanel extends JPanel {
 
     PacManThread pacThread = new PacManThread(this,50);
     ThreadBlinky blinkyThread = new ThreadBlinky(this, 150);
+    IntroThread introThread = new IntroThread(this, 5000);
 
     public MyPanel() {
         addKeyListener(new MyKeyboardAdapter(this));
@@ -41,8 +42,26 @@ class MyPanel extends JPanel {
 
     }
 
+    public void startGame() {
+        game_logic.isReady = false;
+        if (pacThread == null) {
+            pacThread = new PacManThread(this, 180);
+            pacThread.start();
+        }
+
+        if(blinkyThread==null){
+            blinkyThread = new ThreadBlinky(this, game_logic.ghost_vel);
+            blinkyThread.start();
+        }
+    }
+    
     // chiude finestra
     public void close(){
+        if (introThread != null) introThread.stopThread();
+        if (pacThread != null) pacThread.stopThread();
+        if(blinkyThread!= null) blinkyThread.stopThread();
 
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (parentWindow != null) parentWindow.dispose();
     }
 }

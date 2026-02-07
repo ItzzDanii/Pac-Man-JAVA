@@ -15,7 +15,7 @@ public class SingleTon {
     private SingleTon(){
         this.score = 0;
         this.current_level = 1;
-        this.pac_lifes = 1;
+        this.pac_lifes = 3;
         this.file_max_score = "max_score.txt";
         this.pac_vel = 180; 
         this.ghost_vel = 200;

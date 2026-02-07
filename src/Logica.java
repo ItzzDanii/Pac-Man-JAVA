@@ -134,7 +134,7 @@ public class Logica{
             {
                 for(int j=0;j<SingleTon.getInstance().COLS;j++)
                 {
-                    SingleTon.getInstance().game_map[i][j] = "EMPTY";
+                    SingleTon.getInstance().game_map[i][j] = "BALL";
                 }
             }
 
@@ -254,9 +254,9 @@ public class Logica{
         SingleTon.getInstance().game_map[12][14] = "DOOR2";
 
         //potenziamenti di pacman
-        //SingleTon.getInstance().game_map[3][1] = "POWER_UP";
-        //SingleTon.getInstance().game_map[3][26] = "POWER_UP";
-        //SingleTon.getInstance().game_map[23][1] = "POWER_UP";
+        SingleTon.getInstance().game_map[3][1] = "POWER_UP";
+        SingleTon.getInstance().game_map[3][26] = "POWER_UP";
+        SingleTon.getInstance().game_map[23][1] = "POWER_UP";
         SingleTon.getInstance().game_map[23][26] = "POWER_UP";
 
         //teletrasporti per pacman

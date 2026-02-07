@@ -81,10 +81,66 @@ public class Grafica {
                     }
 
                     if(i == logic.blinkyX && j == logic.blinkyY){
+                        if(logic.blinkyDead){
+                            switch (logic.blinkyDirection) {
+                                case 0:
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_left;
+                                    break;
+
+                                case 1:
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_up;
+                                    break;
+
+                                case 2:
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_right;
+                                    break;
+
+                                case 3:
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().dead_down;
+                                    break;
+                            
+                                default:
+                                    break;
+                            }
+                        }
+                        else if(logic.powered){
+                           if (logic.blinkyAnimate)
+                                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+                            else
+                                SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue_2;
+                        }
+                        else{
+                            switch (logic.blinkyDirection) {
+                                case 0: 
+                                    if(logic.blinkyAnimate)
+                                        SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left ;
+                                    else SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left_2;
+                                break;
+
+                                case 1: 
+                                if(logic.blinkyAnimate)
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up ;
+                                else SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up_2;
+                                break;
+
+                                case 2: 
+                                if(logic.blinkyAnimate)
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right ;
+                                else SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right_2;
+                                break;
+
+                                case 3: 
+                                if(logic.blinkyAnimate)
+                                    SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down ;
+                                else SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down_2;
+                                break;
+                        }
+                        
                         g.drawImage(SingleTon.getInstance().blinky_CurrentImage,x,y,cellW,cellH,null);
                     }
                 }
             }
         }
     }
+}
 }

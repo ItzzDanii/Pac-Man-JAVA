@@ -13,7 +13,7 @@ public class BlinkyThread extends Thread {
     @Override
     public void run() {
         while (running) {
-            if (logica.isReady && !logica.isGameOver()) {
+            if (!logica.isReady && !logica.isGameOver()) {
                 logica.moveBlinky(false);
                 logica.checkBlinkyCollision();
                 pannello.repaint();

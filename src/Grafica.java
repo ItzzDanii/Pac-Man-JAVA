@@ -106,7 +106,7 @@ public class Grafica {
                         g.drawImage(SingleTon.getInstance().pac_man_CurrentImage, x, y, cellW, cellH, null);
                     }
 
-                    if(i == logic.blinkyX && j == logic.blinkyY){
+                    if(i == logic.blinkyY && j == logic.blinkyX){
                         if(logic.blinkyDead){
                             switch (logic.blinkyDirection) {
                                 case 0:
@@ -168,5 +168,34 @@ public class Grafica {
             }
         }
     }
+}
+
+    public void startGame(Graphics g) {
+        if(logic.isReady){
+            this.pan.setFocusable(false);
+            int cellX = 11 * logic.cell_width;
+            int cellY = 18 * logic.cell_heigth;
+
+            SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
+            logic.dir = "dx";
+
+            SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
+            logic.blinkyDirection = 0;
+
+            if (!logic.introPlayed) {
+                SingleTon.getInstance().intro.play();
+                logic.introPlayed = true;
+            }
+
+            g.setColor(Color.YELLOW); 
+
+            Font sizeFont = SingleTon.getInstance().customFont.deriveFont(Font.BOLD, (float)(logic.cell_heigth-10));
+            g.setFont(sizeFont); 
+            
+            g.drawString("READY!", cellX+40 ,cellY-1);
+
+        }
+        if(!logic.isReady)
+            this.pan.setFocusable(true);
 }
 }

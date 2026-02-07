@@ -325,8 +325,8 @@ public class Logica{
         SingleTon.getInstance().score+=10;
     }
     
-    if(cell.equals("POWER_UP")) {
-        pUpThread =  new PowerUpThread(pan, 8500);
+    if(cell.equals("POWER_UP")) {        
+        pUpThread =  new PowerUpThread(pan, 8500); // creo thread di potenzimaneto
         pUpThread.start(); //avvia thread di potenziamento
         SingleTon.getInstance().score += 50;
         emptyCell(pac_manX, pac_manY, 1, 1);
@@ -567,15 +567,15 @@ public class Logica{
             blinkyDead = false;
             powered = false; //opzionale, così non scappa subito
 
-        //Ripristina immagine normale in base alla direzione
-        switch (blinkyDirection) {
-            case 0: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left; break;
-            case 1: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up; break;
-            case 2: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right; break;
-            case 3: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down; break;
+            //Ripristina immagine normale in base alla direzione
+            switch (blinkyDirection) {
+                case 0: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left; break;
+                case 1: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_up; break;
+                case 2: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_right; break;
+                case 3: SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_down; break;
+            }
         }
     }
-}
 
     public void checkBlinkyCollision() {
         if(blinkyX == pac_manX && blinkyY == pac_manY) {
@@ -617,6 +617,8 @@ public class Logica{
             //fantasma uccide pacman
             pacmanDead = true;
             SingleTon.getInstance().pac_lifes-=1;
+            resetPositions();
+
             if(SingleTon.getInstance().pac_lifes <= 0) gameOver = true;
         }
     }
@@ -626,14 +628,14 @@ public class Logica{
         //intro del gioco
         if(isLvlCompleted() || isFirstGame() || pacmanDead){
 
-        SingleTon.getInstance().powerSound.stop(); // ferma tutti potenziamenti di pacman
+        SingleTon.getInstance().powerSound.stop();
 
-        //reinizializza il gioco
+        //inizializza il gioco
         pacmanDead=false;
         isReady = true;
         introPlayed = false;
 
-        // posuizione iniziale di pacman
+        // posizione iniziale di pacman
         pac_manX = 13;
         pac_manY = 23;
 
@@ -645,6 +647,7 @@ public class Logica{
                 SingleTon.getInstance().powerSound.stop();
                 pUpThread.stopThread();
         }
+
             blinkyDead = false;
         }
     
@@ -667,14 +670,14 @@ public class Logica{
         initializeMap();
         pan.repaint();
 
-        //bisogna aspettare intro per abilitare input WASD
+        //bisogna aspettare intro per abilitare input (WASD)
         pan.setFocusable(false);
 
         if (isGameOver()) {
         SingleTon.getInstance().intro.stop();
         return;        
         }
-            // parte intro che dura 5000 ms (5s)
+            // parte intro del gioco che dura 5 secondi
             SingleTon.getInstance().intro.play(); //parte musica intro
             try {
                 Thread.sleep(5000);
@@ -683,7 +686,7 @@ public class Logica{
             //fine intro
             isReady = false;
 
-            //abilita input WASD
+            //abilita input (WASD)
             pan.setFocusable(true);
             pan.requestFocusInWindow();
         }
@@ -696,8 +699,7 @@ public class Logica{
         for(int j = 0; j < SingleTon.getInstance().ROWS; j++) {
             for(int i = 0; i < SingleTon.getInstance().COLS; i++) {
                 // se non c'è niente, livello completato
-                if("BALL".equals(SingleTon.getInstance().game_map[j][i]) || 
-                    "POWER_UP".equals(SingleTon.getInstance().game_map[j][i])) {
+                if(SingleTon.getInstance().game_map[j][i].equals("BALL") || SingleTon.getInstance().game_map[j][i].equals("POWER_UP")) {
                     level_completed = false;
                     return;
                 }
@@ -712,4 +714,5 @@ public class Logica{
         initializeMap();
         }
     }
+
 }

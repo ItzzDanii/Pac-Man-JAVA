@@ -14,6 +14,7 @@ class MyPanel extends JPanel {
     Grafica game_graphic = new Grafica(this, screenW, screenH, game_logic);
 
     PacManThread pacThread = new PacManThread(this,50);
+    ThreadBlinky blinkyThread = new ThreadBlinky(this, 150);
 
     public MyPanel() {
         addKeyListener(new MyKeyboardAdapter(this));
@@ -21,6 +22,7 @@ class MyPanel extends JPanel {
         game_logic.initializeMap();
         SingleTon.getInstance().initImages();
         pacThread.start();
+        blinkyThread.start();
     }
 
     @Override

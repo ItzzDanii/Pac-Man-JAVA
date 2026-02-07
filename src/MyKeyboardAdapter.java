@@ -14,7 +14,7 @@ public class MyKeyboardAdapter implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
 
-        if(!logica.isGameOver()){
+        if(!logica.isGameOver() && logica.canPlay()){
         switch (e.getKeyCode()) {
             case KeyEvent.VK_A:
             case KeyEvent.VK_LEFT:
@@ -41,7 +41,7 @@ public class MyKeyboardAdapter implements KeyListener {
         }
 }
     // schermata fine partita
-        if (logica.isGameOver()) {
+        if (logica.isGameOver() && SingleTon.getInstance().pac_lifes<=0) {
             switch (e.getKeyCode()) {
                 case KeyEvent.VK_P:
                     System.out.println("Nuova partita...");

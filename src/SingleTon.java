@@ -15,10 +15,11 @@ public class SingleTon {
     private SingleTon(){
         this.score = 0;
         this.current_level = 1;
-        this.pac_lifes = 3;
+        this.pac_lifes = 1;
         this.file_max_score = "max_score.txt";
         this.pac_vel = 180; 
         this.ghost_vel = 200;
+        this.max_score = loadMaxScore();
 
         //Chiesto a chat come caricare un custom font
         try {
@@ -160,10 +161,10 @@ public class SingleTon {
     public Image dead_down = new ImageIcon("img/GHOST_DEAD/dead_down.png").getImage();
 
     //========================== SUONI ==========================
-    public Sound eat_sound = new Sound("SOUNDS/munch.wav");
-    public Sound intro = new Sound("SOUNDS/intro.wav");
-    public Sound eat_ghost = new Sound("SOUNDS/eatghost.wav");
-    public Sound powerSound = new Sound("SOUNDS/powerup.wav");
+    public Sound eat_sound = new Sound("sounds/munch.wav");
+    public Sound intro = new Sound("sounds/intro.wav");
+    public Sound eat_ghost = new Sound("sounds/eatghost.wav");
+    public Sound powerSound = new Sound("sounds/powerup.wav");
 
     //======================= VARIABILI DI GIOCO==========================
     public int current_level; //livello attuale (man mano difficile)

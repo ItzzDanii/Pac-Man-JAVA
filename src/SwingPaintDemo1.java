@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 public class SwingPaintDemo1 {
     
     // icona finestra di gioco
-    static Image game_icon = new ImageIcon("Images/game_icon.png").getImage();
+    static Image game_icon = new ImageIcon("img/game_icon.png").getImage();
 
     public static void main(String[] args) {
 

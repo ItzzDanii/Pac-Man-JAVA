@@ -19,17 +19,17 @@ class MyPanel extends JPanel {
     final int screenH = 1000;
 
     //icona finestra
-    Image gameOver_screen = new ImageIcon("Images/gameOver.png").getImage();
+    Image gameOver_screen = new ImageIcon("img/gameOver.png").getImage();
 
     //sound fine partita
     Sound gameOver_sound;
-    boolean isPlayed = false;
+    boolean isLosePlayed = false;
 
     //CUSTOM FONT
     private Font emulogicFont = null;
 
     Logica game_logic = new Logica(this, screenW, screenH);
-    Grafica mappa = new Grafica(game_logic);
+    Grafica game_graphic = new Grafica(game_logic);
     
     IntroThread introThread;
     PacManThread pacmanThread;
@@ -43,14 +43,16 @@ class MyPanel extends JPanel {
         //inizializza la mappa
         game_logic.initializeMap();
 
+        if(!game_logic.isGameOver()){
         //avvia il thread dell'intro
         introThread = new IntroThread(this, 5000); // 5 secondi di intro
         introThread.start();
+        }
 
         //carica font
         try {
             emulogicFont = Font.createFont(Font.TRUETYPE_FONT, 
-                new File("fonts/Emulogic-zrEw.ttf"));
+                new File("font/Emulogic-zrEw.ttf"));
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
             ge.registerFont(emulogicFont);
         } catch (FontFormatException | IOException e) {
@@ -67,26 +69,19 @@ class MyPanel extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);  
-            if (game_logic.gameOver) {
+            if (game_logic.isGameOver()) {
                 SingleTon.getInstance().intro.stop();
 
-                if(!isPlayed)
+                if(!isLosePlayed)
                 {
-                    gameOver_sound  = new Sound("Sounds/gameOver.wav");
+                    gameOver_sound  = new Sound("sounds/gameOver.wav");
                     gameOver_sound.play();
-                    isPlayed= true;
-                    setFocusable(false);
+                    isLosePlayed= true;
                 }
-
-                if(isPlayed && gameOver_sound.isFinished())
-                    setFocusable(true);
-
-            if (pacmanThread != null)
-                pacmanThread.stopThread();
-
-            if(blinkyThread != null)
-                blinkyThread.stopThread();
-
+            
+            setFocusable(true);
+            requestFocusInWindow();
+            
             g.drawImage(gameOver_screen, 0, 0, null);
 
             Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 20);
@@ -106,10 +101,10 @@ class MyPanel extends JPanel {
             return;
         }
 
-        mappa.drawMap(g);
+        game_graphic.drawMap(g);
 
-        if (game_logic.isReady) {
-            mappa.startGame(g);
+        if (game_logic.isReady || game_logic.level_completed && !game_logic.isGameOver()) {
+            game_graphic.startGame(g);
             setFocusable(false);
         }
 
@@ -118,23 +113,18 @@ class MyPanel extends JPanel {
             requestFocusInWindow();
         }
 
-        if (game_logic.isLvlCompleted()) {
-            game_logic.levelCompleted();
-        }
-
         if (game_logic.blinkyDead) {
-
             Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 12);
             g.setFont(sizeFont);
             g.setColor(Color.WHITE);
             g.drawString("200", (game_logic.blinkyX * SingleTon.getInstance().COLS + 50), (game_logic.blinkyY * SingleTon.getInstance().ROWS + 50));
             game_logic.pointsTimer--;
-
         }
     }
 
     public void rematch() {
-        isPlayed = false;
+
+        gameOver_sound.stop();
         game_logic.gameOver = false;
         game_logic.firstTime = true;
         game_logic.introPlayed = false;
@@ -149,25 +139,28 @@ class MyPanel extends JPanel {
         game_logic.isReady = true;
         game_logic.level_completed = false;
 
-    new javax.swing.Timer(5000, e -> {
-        game_logic.isReady = false;
+        new javax.swing.Timer(5000, e -> {
+            game_logic.isReady = false;
 
-        if (pacmanThread != null) pacmanThread.stopThread();
-        if (blinkyThread != null) blinkyThread.stopThread();
+            if (pacmanThread != null) pacmanThread.stopThread();
+            if (blinkyThread != null) blinkyThread.stopThread();
 
-        blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (20*SingleTon.getInstance().current_level));
-        
-        pacmanThread = new PacManThread(this, 180);
-        pacmanThread.start();
-        blinkyThread.start();
+            blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (20*SingleTon.getInstance().current_level));
+            
+            pacmanThread = new PacManThread(this, 180);
+            pacmanThread.start();
+            blinkyThread.start();
 
-        ((javax.swing.Timer)e.getSource()).stop();
-    }).start();
+            ((javax.swing.Timer)e.getSource()).stop();
+        }).start();
 
     repaint();
     }
 
     public void startGame() {
+        if(game_logic.isGameOver())
+            return;
+
         game_logic.isReady = false;
         if (pacmanThread == null) {
             pacmanThread = new PacManThread(this, 180);
@@ -181,13 +174,15 @@ class MyPanel extends JPanel {
     }
 
     public void levelUp() {
+        if(game_logic.isGameOver())
+            return;
+
         SingleTon.getInstance().ghost_vel -= 50;
         if (SingleTon.getInstance().ghost_vel < 50) SingleTon.getInstance().ghost_vel = 50;
 
         if (blinkyThread != null) blinkyThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
 
-        game_logic.resetPositions();
         game_logic.initializeMap();
 
         pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);

@@ -25,7 +25,6 @@ public class Grafica {
 
     public void drawMap(Graphics g) {
         logic.controlloClear(); //controlla se livello completato
-        logic.levelCompleted(); //incrementa livello
 
         if(logic.isGameOver() || logic.isLvlCompleted()) return;
         else{
@@ -171,7 +170,7 @@ public class Grafica {
 }
 
     public void startGame(Graphics g) {
-    if(logic.isReady){
+    if(logic.isReady || logic.level_completed){
         this.pan.setFocusable(false);
         int cellX = 11 * logic.cell_width;
         int cellY = 18 * logic.cell_heigth;
@@ -193,11 +192,8 @@ public class Grafica {
         g.setFont(sizeFont); 
         
         g.drawString("READY!", cellX+40 ,cellY-1);
-
     }
     if(!logic.isReady)
         this.pan.setFocusable(true);
 }
-
-
 }

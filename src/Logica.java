@@ -134,7 +134,7 @@ public class Logica{
             {
                 for(int j=0;j<SingleTon.getInstance().COLS;j++)
                 {
-                    SingleTon.getInstance().game_map[i][j] = "BALL";
+                    SingleTon.getInstance().game_map[i][j] = "EMPTY";
                 }
             }
 
@@ -254,9 +254,9 @@ public class Logica{
         SingleTon.getInstance().game_map[12][14] = "DOOR2";
 
         //potenziamenti di pacman
-        SingleTon.getInstance().game_map[3][1] = "POWER_UP";
-        SingleTon.getInstance().game_map[3][26] = "POWER_UP";
-        SingleTon.getInstance().game_map[23][1] = "POWER_UP";
+        //SingleTon.getInstance().game_map[3][1] = "POWER_UP";
+        //SingleTon.getInstance().game_map[3][26] = "POWER_UP";
+        //SingleTon.getInstance().game_map[23][1] = "POWER_UP";
         SingleTon.getInstance().game_map[23][26] = "POWER_UP";
 
         //teletrasporti per pacman
@@ -337,6 +337,8 @@ public class Logica{
     if(SingleTon.getInstance().pac_lifes<=0){ //se muore
         gameOver = true;
         level_completed = false;
+        pan.setFocusable(true);
+        pan.requestFocusInWindow();
         return;
     }
     
@@ -615,50 +617,53 @@ public class Logica{
             //fantasma uccide pacman
             pacmanDead = true;
             SingleTon.getInstance().pac_lifes-=1;
-            resetPositions();
+            if(SingleTon.getInstance().pac_lifes <= 0) {
+                    gameOver = true;
+                    return;
+            }
 
-            if(SingleTon.getInstance().pac_lifes <= 0) gameOver = true;
+            resetPositions();
         }
     }
 }
 
     public void resetPositions() {
-        //intro del gioco
-        if(isLvlCompleted() || isFirstGame() || pacmanDead){
+    if (isGameOver()) {
+        SingleTon.getInstance().intro.stop();
+        return;
+    }
 
+    if (isLvlCompleted() || isFirstGame() || pacmanDead) {
+        updateHighScore();
         SingleTon.getInstance().powerSound.stop();
 
-        //inizializza il gioco
-        pacmanDead=false;
+        pacmanDead = false;
         isReady = true;
         introPlayed = false;
 
-        // posizione iniziale di pacman
+        // Posizione iniziale Pac-Man
         pac_manX = 13;
         pac_manY = 23;
 
+        // Reset Blinky se livello completato
         if (isLvlCompleted()) {
             powered = false;
             powerSession = 0;
-            if(pUpThread != null) {
+            if (pUpThread != null) {
                 pUpThread.session = 0;
                 SingleTon.getInstance().powerSound.stop();
                 pUpThread.stopThread();
-        }
-
+            }
             blinkyDead = false;
         }
-    
-        // Imposta come direzione di default di pacman a destra
+
+        // Direzione di default
         SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
         dir = "dx";
 
-        //posizione Blinky
         blinkyX = 14;
         blinkyY = 11;
         blinkyDead = false;
-
-        // imposta direzione default di blinky a sinistra
         blinkyDirection = 0;
         SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
 
@@ -668,28 +673,22 @@ public class Logica{
         initializeMap();
         pan.repaint();
 
-        //bisogna aspettare intro per abilitare input (WASD)
+        // Disabilita input
         pan.setFocusable(false);
 
-        if (isGameOver()) {
-        SingleTon.getInstance().intro.stop();
-        return;        
-        }
-            // parte intro del gioco che dura 5 secondi
-            SingleTon.getInstance().intro.play(); //parte musica intro
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {}
+        // Avvia intro 
+        SingleTon.getInstance().intro.play();
 
-            //fine intro
-            isReady = false;
-
-            //abilita input (WASD)
+        // Timer 5 secondi
+        new javax.swing.Timer(5000, e -> {
+            isReady = false;        
             pan.setFocusable(true);
             pan.requestFocusInWindow();
-        }
-    }
 
+            ((javax.swing.Timer)e.getSource()).stop();
+        }).start();
+    }
+}
     public void controlloClear() {
         //tutte le palline/power-up mangiati
         level_completed=true;
@@ -703,14 +702,7 @@ public class Logica{
                 }
             }
         }
-}
 
-    public void levelCompleted() {
-        if(isLvlCompleted()) {
-        SingleTon.getInstance().current_level++;
         resetPositions();
-        initializeMap();
-        }
-    }
-
+}
 }

@@ -49,6 +49,13 @@ public class Grafica {
             int cellH = availableHeight / SingleTon.getInstance().ROWS;
             String cell_value = "";
 
+            // disegna vite di pacman
+            for(int i = 0;i<SingleTon.getInstance().pac_lifes;i++){
+                int x = 50 + i * (cellW + 5);
+                int y = (SingleTon.getInstance().ROWS * cellH) + (marginBottom + 35);
+                g.drawImage(SingleTon.getInstance().pac_right, x, y,cellW,cellH, null);
+            }
+
            for (int i = 0; i < SingleTon.getInstance().ROWS; i++) {
                 for (int j = 0; j < SingleTon.getInstance().COLS; j++) {
                     int x = marginLeft + j * cellW;

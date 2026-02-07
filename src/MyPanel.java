@@ -11,9 +11,11 @@ class MyPanel extends JPanel {
     final int screenH = 1000;
 
     Logica game_logic = new Logica(this, screenW, screenH);
+    Grafica game_graphic = new Grafica(this, screenW, screenH, game_logic);
 
     public MyPanel() {
         setBorder(BorderFactory.createLineBorder(Color.black)); 
+        game_logic.initializeMap();
     }
 
 
@@ -24,7 +26,8 @@ class MyPanel extends JPanel {
 
     @Override
     public void paintComponent(Graphics g) {
-        super.paintComponent(g);    
+        super.paintComponent(g);   
+        game_graphic.drawMap(g); 
     }  
 
     // fa ripartire tutto (dopo game over)

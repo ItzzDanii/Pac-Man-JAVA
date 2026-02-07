@@ -201,7 +201,7 @@ class MyPanel extends JPanel {
         game_logic.resetPositions();
         game_logic.initializeMap();
 
-        pacmanThread = new PacManThread(this, 120);
+        pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
         blinkyThread = new BlinkyThread(this, game_logic.ghost_vel);
 
         pacmanThread.start();

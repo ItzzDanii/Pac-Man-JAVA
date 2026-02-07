@@ -34,7 +34,7 @@ public class Grafica {
                         case "EMPTY":
                             g.setColor(Color.BLACK);
                             g.fillRect(x, y, cellW, cellH);
-                            
+
                         case "WALL":
                             g.setColor(cell_border_color);
                             g.drawRect(x, y, cellW, cellH);
@@ -42,6 +42,34 @@ public class Grafica {
                             g.fillRect(x, y, cellW, cellH);
                             break;
                 
+                        case "BALL":
+                            int ballX = x + cellW / 3;
+                            int ballY = y + cellH / 3;
+                            g.setColor(ball_border_color);
+                            g.drawOval(ballX, ballY, logic.ball_diam, logic.ball_diam);
+                            g.setColor(ball_fill_color);
+                            g.fillOval(ballX, ballY, logic.ball_diam, logic.ball_diam);
+                            break;
+
+                        case "POWER_UP":
+                        int puX = x + cellW / 4;
+                        int puY = y + cellH / 4;
+                        g.setColor(ball_border_color);
+                        g.drawOval(puX, puY, logic.ball_diam*2, logic.ball_diam*2);
+                        g.setColor(ball_fill_color);
+                        g.fillOval(puX, puY, logic.ball_diam*2, logic.ball_diam*2);
+                        break;
+
+                        case "DOOR1":
+                            g.setColor(new Color(235, 168, 209, 255));
+                            g.fillRect(x, y+(cellH/2)-5, cellW, cellH / 3);
+                            break;
+
+                        case "DOOR2":
+                            g.setColor(new Color(235, 168, 209, 255));
+                            g.fillRect(x, y+(cellH/2)-5, cellW, cellH / 3);
+                            break;
+
                         default:
                             break;
                     }

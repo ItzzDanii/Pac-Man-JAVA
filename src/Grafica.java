@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 
 public class Grafica {
@@ -19,14 +20,39 @@ public class Grafica {
 
     public void drawMap(Graphics g){
         if(!logic.isGameOver() || !logic.isLvlCompleted()){
-            int cellW = screenW / SingleTon.getInstance().COLS;
-            int cellH = screenH / SingleTon.getInstance().ROWS;
+            //spazio dal bordo finestra per le scritte
+            int marginTop = 75;
+            int marginLeft = 50;
+            int marginRight = 25;
+            int marginBottom = 50;
+
+            int availableWidth = screenW - marginLeft - marginRight;
+            int availableHeight = screenH - marginTop - marginBottom;
+            
+            // font delle scritte
+            Font sizeFont = SingleTon.getInstance().customFont.deriveFont(Font.BOLD, (float)(logic.cell_heigth-10));
+
+            // scritta nome player: "1UP"
+            g.setFont(sizeFont);
+            g.setColor(Color.WHITE);
+            g.drawString("1UP",availableWidth/4,(marginTop-45));
+
+            // scritta score player
+            g.drawString(Integer.toString(SingleTon.getInstance().score), (availableWidth/5)+40,(marginTop-10));
+
+            // scritta high score e aggiorna sempre high score
+            logic.updateHighScore();
+            g.drawString("HIGH SCORE", availableWidth/2, (marginTop-45));
+            g.drawString(Integer.toString(SingleTon.getInstance().max_score),availableWidth/2 + 50, (marginTop-15));
+
+            int cellW = availableWidth / SingleTon.getInstance().COLS;
+            int cellH = availableHeight / SingleTon.getInstance().ROWS;
             String cell_value = "";
 
            for (int i = 0; i < SingleTon.getInstance().ROWS; i++) {
                 for (int j = 0; j < SingleTon.getInstance().COLS; j++) {
-                    int x = j * cellW;
-                    int y = i * cellH;
+                    int x = marginLeft + j * cellW;
+                    int y = marginTop + i * cellH;
 
                     cell_value = SingleTon.getInstance().game_map[i][j];
 

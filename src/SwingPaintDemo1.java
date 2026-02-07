@@ -27,7 +27,6 @@ public class SwingPaintDemo1 {
 
         MyPanel p = new MyPanel();
         p.setBackground(Color.BLACK);
-        p.requestFocusInWindow();
         f.add(p);
         f.pack();
         f.setVisible(true);

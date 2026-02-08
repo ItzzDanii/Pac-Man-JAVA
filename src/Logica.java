@@ -44,6 +44,7 @@ public class Logica{
     int pinkyDirection; //direzione di pinky
     public boolean pinkyAnimate = true; //per animare pinky
     boolean pinkyDead = false; //pinky morto??
+    boolean pinkyReleased = false;
 
     int pinkyMoveCounter = 0;
 
@@ -52,6 +53,7 @@ public class Logica{
     int blinkyDirection; //direzione di blinky
     public boolean blinkyAnimate = true; //animazione di blinky
     boolean blinkyDead = false; //blinky morto??
+    boolean blinkyReleased = false;
 
     int blinkyMoveCounter = 0;
 
@@ -69,6 +71,7 @@ public class Logica{
     int clydeDirection; //direzione di blclyde
     public boolean clydeAnimate = true; //animazione di blclyde
     boolean clydeDead = false; //blclyde morto??
+    boolean clydeReleased = false;
 
     int clydeMoveCounter = 0;
 
@@ -860,6 +863,182 @@ public class Logica{
     }
 }
 
+    public void moveInkyBFS(int targetX, int targetY) {
+    class Node { int x, y; Node parent; Node(int x,int y,Node p){this.x=x;this.y=y;parent=p;} }
+
+    boolean[][] visited = new boolean[SingleTon.getInstance().ROWS][SingleTon.getInstance().COLS];
+    Queue<Node> queue = new LinkedList<>();
+    queue.add(new Node(inkyX, inkyY, null));
+    visited[inkyY][inkyX] = true;
+
+    Node endNode = null;
+
+    while(!queue.isEmpty()){
+        Node current = queue.poll();
+        if(current.x == targetX && current.y == targetY){ endNode = current; break; }
+
+        String[] directions = {"su","giu","sx","dx"};
+        for(String dir : directions){
+            int nx = current.x;
+            int ny = current.y;
+
+            switch(dir){
+                case "su": 
+                    ny--; 
+                    break;
+
+                case "giu": 
+                    ny++; 
+                    break;
+
+                case "sx": 
+                    nx--; 
+                    break;
+
+                case "dx": 
+                    nx++;
+                    break;
+            }
+
+            if(nx >=0 && nx < SingleTon.getInstance().COLS && ny >=0 && ny < SingleTon.getInstance().ROWS && !visited[ny][nx]){
+                String cell = SingleTon.getInstance().game_map[ny][nx];
+                if(!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2")){
+                    visited[ny][nx] = true;
+                    queue.add(new Node(nx, ny, current));
+                }
+            }
+        }
+    }
+
+    if(endNode != null){
+        //Risaliamo il percorso fino alla prima mossa
+        Node moveNode = endNode;
+        while(moveNode.parent != null && moveNode.parent.parent != null){
+            moveNode = moveNode.parent;
+        }
+        //Esegui il movimento
+        if(moveNode.x > inkyX){ inkyX++; inkyDirection = 2; }
+        if(moveNode.x < inkyX){ inkyX--; inkyDirection = 0; }
+        if(moveNode.y > inkyY){ inkyY++; inkyDirection = 3; }
+        if(moveNode.y < inkyY){ inkyY--; inkyDirection = 1; }
+
+        animateInky();
+    }
+}
+    
+    //! Generato con ChatGPT algoritmo del fantasma !
+    public void moveInky(boolean scatterMode) {
+        if (!inkyReleased) {
+        animateInky(); 
+        return; 
+    }
+
+        float currentSpeed; //1 = normale, 2 = più lento (quando si potenzia pacman)
+
+        if (inkyDead) {
+            currentSpeed = 1; //velocità normale quando morto (torna alla base)
+        } else {
+            if(powered) currentSpeed = 2;
+            else currentSpeed = 1; //2 = lento quando powered, 1 = normale
+        }
+
+        inkyMoveCounter++;
+        if (inkyMoveCounter < currentSpeed) return;
+        inkyMoveCounter = 0;
+
+        int targetX, targetY;
+
+        if (inkyDead) {
+            targetX = 13; targetY = 11;
+        } else if (powered) {
+            //Fuga da Pac-Man
+            int maxDist = -1;
+            int farX = inkyX;
+            int farY = inkyY;
+            for (int y = 0; y < SingleTon.getInstance().ROWS; y++) {
+                for (int x = 0; x < SingleTon.getInstance().COLS; x++) {
+                    String cell = SingleTon.getInstance().game_map[y][x];
+                    if (!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2")) {
+                        int dist = Math.abs(x - pac_manX) + Math.abs(y - pac_manY);
+                        if (dist > maxDist) { maxDist = dist; farX = x; farY = y; }
+                    }
+                }
+            }
+            targetX = farX;
+            targetY = farY;
+        } else if (scatterMode) {
+            targetX = SingleTon.getInstance().COLS - 1; targetY = 0;
+        } else {
+            targetX = pac_manX; targetY = pac_manY;
+        }
+
+        moveInkyBFS(targetX, targetY);
+
+        //Se inky è morto e ha raggiunto la base, resuscita
+        if (inkyDead && inkyX == 13 && inkyY == 11) {
+            inkyDead = false;
+            powered = false; //opzionale, così non scappa subito
+
+            //Ripristina immagine normale in base alla direzione
+            switch (inkyDirection) {
+                case 0: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_left; break;
+                case 1: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_up; break;
+                case 2: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_right; break;
+                case 3: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_down; break;
+            }
+        }
+    }
+
+    public void checkInkyCollision() {
+        if(inkyX == pac_manX && inkyY == pac_manY) {
+            if(powered && !inkyDead) { 
+            //mangiato da pacman
+            SingleTon.getInstance().eat_ghost.play(); //suono fantasma mangiato
+            SingleTon.getInstance().score+=200; //guadagni points
+            inkyDead = true; //fantasma morto
+            
+            //coordinate dello score mangiato da visualizzare
+            pointsX = inkyX;
+            pointsY = inkyY;
+            pointsTimer = 20;
+
+            // disegna score del fantasma mangiato
+            pan.getGraphics().setColor(Color.WHITE);
+            pan.getGraphics().drawString("200", inkyX+5, inkyY+5);
+
+            // essendo che muore, cambia skin
+            switch(inkyDirection) {
+                case 0: 
+                    SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_left; 
+                    break;
+
+                case 1: 
+                    SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_up; 
+                    break;
+
+                case 2: 
+                    SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_right; 
+                    break;
+
+                case 3: 
+                    SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_down; 
+                    break;
+            }
+            return;
+        } else if(!inkyDead && inkyX == pac_manX && inkyY == pac_manY && !powered) {
+            //fantasma uccide pacman
+            pacmanDead = true;
+            SingleTon.getInstance().pac_lifes-=1;
+            if(SingleTon.getInstance().pac_lifes <= 0) {
+                    gameOver = true;
+                    return;
+            }
+
+            resetPositions();
+        }
+    }
+}
+
     public void resetPositions() {
     if (isGameOver()) {
         SingleTon.getInstance().intro.stop();
@@ -900,6 +1079,27 @@ public class Logica{
         blinkyDirection = 0;
         SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
 
+        inkyX = 12;
+        inkyY = 14;
+        inkyDead = false;
+        inkyReleased = false;
+        inkyDirection = 0;
+        SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_left;
+
+        clydeX = 13;
+        clydeY = 14;
+        clydeDead = false;
+        clydeReleased = false;
+        clydeDirection = 0;
+        SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_left;
+
+        pinkyX = 14;
+        pinkyY = 14;
+        pinkyDead = false;
+        pinkyReleased = false;
+        pinkyDirection = 0;
+        SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_left;
+    
         powered = false;
         gameOver = false;
 

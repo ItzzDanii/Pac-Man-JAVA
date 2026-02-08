@@ -107,10 +107,10 @@ public class SingleTon {
     public Image pinky_up = new ImageIcon("img/PINKY/pinky_up.png").getImage();
     public Image pinky_down = new ImageIcon("img/PINKY/pinky_down.png").getImage();
 
-    public Image pinky_left_2 = new ImageIcon("img/PINKY/pinky_left2.png").getImage();
-    public Image pinky_right_2 = new ImageIcon("img/PINKY/pinky_right2.png").getImage();
-    public Image pinky_up_2 = new ImageIcon("img/PINKY/pinky_up2.png").getImage();
-    public Image pinky_down_2 = new ImageIcon("img/PINKY/pinky_down2.png").getImage();
+    public Image pinky_left_2 = new ImageIcon("img/PINKY/pinky_left_2.png").getImage();
+    public Image pinky_right_2 = new ImageIcon("img/PINKY/pinky_right_2.png").getImage();
+    public Image pinky_up_2 = new ImageIcon("img/PINKY/pinky_up_2.png").getImage();
+    public Image pinky_down_2 = new ImageIcon("img/PINKY/pinky_down_2.png").getImage();
 
     //========================== IMMAGINI  BLINKY ==========================
     public Image blinky_CurrentImage; //immagine attuale di blinky
@@ -119,10 +119,10 @@ public class SingleTon {
     public Image blinky_up    = new ImageIcon("img/BLINKY/blinky_up.png").getImage();
     public Image blinky_down  = new ImageIcon("img/BLINKY/blinky_down.png").getImage();
 
-    public Image blinky_left_2 = new ImageIcon("img/BLINKY/blinky_left2.png").getImage();
-    public Image blinky_right_2 = new ImageIcon("img/BLINKY/blinky_right2.png").getImage();
-    public Image blinky_up_2 = new ImageIcon("img/BLINKY/blinky_up2.png").getImage();
-    public Image blinky_down_2 = new ImageIcon("img/BLINKY/blinky_down2.png").getImage();
+    public Image blinky_left_2 = new ImageIcon("img/BLINKY/blinky_left_2.png").getImage();
+    public Image blinky_right_2 = new ImageIcon("img/BLINKY/blinky_right_2.png").getImage();
+    public Image blinky_up_2 = new ImageIcon("img/BLINKY/blinky_up_2.png").getImage();
+    public Image blinky_down_2 = new ImageIcon("img/BLINKY/blinky_down_2.png").getImage();
 
     //========================== IMMAGINI  INKY ==========================
     public Image inky_CurrentImage; //immagine attuale di inky

@@ -120,11 +120,27 @@ class MyPanel extends JPanel {
             requestFocusInWindow();
         }
 
-        if (game_logic.blinkyDead) {
-            Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 12);
-            g.setFont(sizeFont);
-            g.setColor(game_graphic.ghosts_points);
-            g.drawString("200", (game_logic.blinkyX * SingleTon.getInstance().COLS + 50), (game_logic.blinkyY * SingleTon.getInstance().ROWS + 50));
+        Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 12);
+        g.setFont(sizeFont);
+        g.setColor(game_graphic.ghosts_points);
+
+        if (game_logic.blinkyDead && game_logic.pointsTimer > 0) {
+            g.drawString("200", (game_logic.blinkyX * game_logic.cell_width + 10), (game_logic.blinkyY * game_logic.cell_heigth+ 10));
+            game_logic.pointsTimer--;
+        }
+
+        if (game_logic.inkyDead && game_logic.pointsTimer > 0) {
+            g.drawString("200", (game_logic.inkyX * game_logic.cell_width + 10), (game_logic.inkyY * game_logic.cell_heigth + 10));
+            game_logic.pointsTimer--;
+        }
+
+        if (game_logic.pinkyDead && game_logic.pointsTimer > 0) {
+            g.drawString("200", (game_logic.pinkyX * game_logic.cell_width + 10), (game_logic.pinkyY * game_logic.cell_heigth + 10));
+            game_logic.pointsTimer--;
+        }
+
+        if (game_logic.clydeDead && game_logic.pointsTimer > 0) {
+            g.drawString("200", (game_logic.clydeX * game_logic.cell_width + 10), (game_logic.clydeY * game_logic.cell_heigth + 10));
             game_logic.pointsTimer--;
         }
     }
@@ -156,8 +172,8 @@ class MyPanel extends JPanel {
             if (blinkyThread != null) blinkyThread.stopThread();
 
             blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel);
-            
             pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
+            
             pacmanThread.start();
             blinkyThread.start();
 
@@ -192,7 +208,6 @@ class MyPanel extends JPanel {
 
         if (blinkyThread != null) blinkyThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
-
         game_logic.initializeMap();
 
         pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel - (SingleTon.getInstance().current_level * 2));

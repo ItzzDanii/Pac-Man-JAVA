@@ -44,6 +44,7 @@ public class Logica{
     int pinkyDirection; //direzione di pinky
     public boolean pinkyAnimate = true; //per animare pinky
     boolean pinkyDead = false; //pinky morto??
+
     int pinkyMoveCounter = 0;
 
      //========================== BLINKY - FANSTAMA ROSSO ==========================
@@ -56,9 +57,20 @@ public class Logica{
 
     //========================== INKY - FANSTAMA AZZURRO ==========================
     int inkyX,inkyY;
+    int inkyDirection; //direzione di blinky
+    public boolean inkyAnimate = true; //animazione di blinky
+    boolean inkyDead = false; //blinky morto??
+    boolean inkyReleased = false;
+
+    int inkyMoveCounter = 0;
 
      //========================== CLYDE - FANSTAMA ARANCIONE ==========================
     int clydeX,clydeY;
+    int clydeDirection; //direzione di blclyde
+    public boolean clydeAnimate = true; //animazione di blclyde
+    boolean clydeDead = false; //blclyde morto??
+
+    int clydeMoveCounter = 0;
 
     public Logica(MyPanel panel,int screenW,int screenH){
         this.pan = panel;
@@ -81,6 +93,18 @@ public class Logica{
         this.blinkyX = 14;
         this.blinkyY = 11;
         this.blinkyDirection = 0;
+
+        this.inkyX = 12;
+        this.inkyY = 14;
+        this.inkyDirection = 0;
+
+        this.clydeX = 13;
+        this.clydeY = 14;
+        this.clydeDirection = 0;
+
+        this.pinkyX = 14;
+        this.pinkyY = 14;
+        this.pinkyDirection = 0;
     }
 
     // === GETTER ===
@@ -466,6 +490,201 @@ public class Logica{
 
             //alterno per animazione
             blinkyAnimate = !blinkyAnimate; 
+        }
+    }
+
+    public void animateInky() {
+        if(powered && powerSession > 1000) // in ms - 1000ms ovvero che all'inizio del potenziamento di pac man, diventa bianco-blu
+        {
+            if(inkyAnimate)
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+            else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().vul_ghost_blue_2;
+        }
+        else if(powered && powerSession < 7000) // se manca poco al termine del potenziamento di pac man, diventa bianco-rosso
+        {
+            if(inkyAnimate)
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().vul_ghost_red;
+            else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().vul_ghost_red_2;
+        }
+        else if(inkyDead)
+        {
+            switch (inkyDirection) {
+                 case 0: //LEFT
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_left;
+                break;
+
+            case 1: //UP
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_up;
+                break;
+
+            case 2: //RIGHT
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_right;
+                break;
+
+            case 3: //DOWN
+                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_down;
+                break;
+            }
+        }
+        else {
+            switch (inkyDirection) {
+                case 0: //LEFT
+                    if(inkyAnimate)
+                        SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_left;
+                    else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().inky_left_2;
+                    break;
+
+                case 1: //UP
+                    if(inkyAnimate)
+                        SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_up;
+                    else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().inky_up_2;
+                    break;
+
+                case 2: //RIGHT
+                    if(inkyAnimate)
+                        SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_right;
+                    else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().inky_right_2;
+                    break;
+
+                case 3: //DOWN
+                    if(inkyAnimate)
+                        SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_down;
+                    else SingleTon.getInstance().inky_CurrentImage =  SingleTon.getInstance().inky_down_2;
+                    break;
+            }
+
+            //alterno per animazione
+            inkyAnimate = !inkyAnimate; 
+        }
+    }
+
+    public void animatePinky() {
+        if(powered && powerSession > 1000) // in ms - 1000ms ovvero che all'inizio del potenziamento di pac man, diventa bianco-blu
+        {
+            if(pinkyAnimate)
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+            else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().vul_ghost_blue_2;
+        }
+        else if(powered && powerSession < 7000) // se manca poco al termine del potenziamento di pac man, diventa bianco-rosso
+        {
+            if(pinkyAnimate)
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().vul_ghost_red;
+            else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().vul_ghost_red_2;
+        }
+        else if(pinkyDead)
+        {
+            switch (pinkyDirection) {
+                 case 0: //LEFT
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_left;
+                break;
+
+            case 1: //UP
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_up;
+                break;
+
+            case 2: //RIGHT
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_right;
+                break;
+
+            case 3: //DOWN
+                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_down;
+                break;
+            }
+        }
+        else {
+            switch (pinkyDirection) {
+                case 0: //LEFT
+                    if(pinkyAnimate)
+                        SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_left;
+                    else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().pinky_left_2;
+                    break;
+
+                case 1: //UP
+                    if(pinkyAnimate)
+                        SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_up;
+                    else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().pinky_up_2;
+                    break;
+
+                case 2: //RIGHT
+                    if(pinkyAnimate)
+                        SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_right;
+                    else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().pinky_right_2;
+                    break;
+
+                case 3: //DOWN
+                    if(pinkyAnimate)
+                        SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_down;
+                    else SingleTon.getInstance().pinky_CurrentImage =  SingleTon.getInstance().pinky_down_2;
+                    break;
+            }
+
+            //alterno per animazione
+            pinkyAnimate = !pinkyAnimate; 
+        }
+    }
+
+    public void animateClyde() {
+        if(powered && powerSession > 1000) // in ms - 1000ms ovvero che all'inizio del potenziamento di pac man, diventa bianco-blu
+        {
+            if(clydeAnimate)
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
+            else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().vul_ghost_blue_2;
+        }
+        else if(powered && powerSession < 7000) // se manca poco al termine del potenziamento di pac man, diventa bianco-rosso
+        {
+            if(clydeAnimate)
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().vul_ghost_red;
+            else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().vul_ghost_red_2;
+        }
+        else if(clydeDead)
+        {
+            switch (clydeDirection) {
+                 case 0: //LEFT
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_left;
+                break;
+
+            case 1: //UP
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_up;
+                break;
+
+            case 2: //RIGHT
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_right;
+                break;
+
+            case 3: //DOWN
+                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_down;
+                break;
+            }
+        }
+        else {
+            switch (clydeDirection) {
+                case 0: //LEFT
+                    if(clydeAnimate)
+                        SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_left;
+                    else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().clyde_left_2;
+                    break;
+
+                case 1: //UP
+                    if(clydeAnimate)
+                        SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_up;
+                    else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().clyde_up_2;
+                    break;
+
+                case 2: //RIGHT
+                    if(clydeAnimate)
+                        SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_right;
+                    else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().clyde_right_2;
+                    break;
+
+                case 3: //DOWN
+                    if(clydeAnimate)
+                        SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_down;
+                    else SingleTon.getInstance().clyde_CurrentImage =  SingleTon.getInstance().clyde_down_2;
+                    break;
+            }
+
+            //alterno per animazione
+            clydeAnimate = !clydeAnimate; 
         }
     }
 

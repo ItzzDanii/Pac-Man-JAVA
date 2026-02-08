@@ -122,50 +122,8 @@ public class Grafica {
 
                     //disegna inky
                     if(i==logic.inkyY && j == logic.inkyX){
-                        //se muore,occhi
-                        if (logic.inkyDead) {
-                            switch (logic.inkyDirection) {
-                                case 0: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_left; break;
-                                case 1: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_up; break;
-                                case 2: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_right; break;
-                                case 3: SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().dead_down; break;
-                            }
-                        }
-                        else if (logic.powered) {
-                            //altrimenti se debole,blu
-                            if (logic.inkyAnimate)
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
-                            else
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().vul_ghost_blue_2;
-                        }
-                        else {
-                            //altrimenti normale
-                            switch (logic.inkyDirection) {
-                                case 0: 
-                                if(logic.inkyAnimate)
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_left ;
-                                else SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_left_2;
-                                break;
-
-                                case 1: 
-                                if(logic.inkyAnimate)
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_up ;
-                                else SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_up_2;
-                                break;
-
-                                case 2: 
-                                if(logic.inkyAnimate)
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_right ;
-                                else SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_right_2;
-                                break;
-
-                                case 3: 
-                                if(logic.inkyAnimate)
-                                SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_down ;
-                                else SingleTon.getInstance().inky_CurrentImage = SingleTon.getInstance().inky_down_2;
-                                break;
-                            }
-                        }
+                        logic.animateInky();
+                        
                         //disegna inky
                         g.drawImage(SingleTon.getInstance().inky_CurrentImage, x, y,blockW,blockH, null);
                     }

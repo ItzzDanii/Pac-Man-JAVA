@@ -1,6 +1,4 @@
 import javax.swing.SwingUtilities;
-
-import java.awt.Color;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
@@ -25,7 +23,7 @@ public class SwingPaintDemo1 {
         JFrame f = new JFrame("Pac Man"); // titolo finestra
         f.setSize(250,500); // dimensioni finestra
         MyPanel p = new MyPanel();
-        p.setBackground(Color.BLACK); // sfondo finestras
+        p.setBackground(p.game_graphic.color_bg); // sfondo finestras
         f.add(p);
         f.setResizable(false); // finestra non ridimensionabile
         f.pack();

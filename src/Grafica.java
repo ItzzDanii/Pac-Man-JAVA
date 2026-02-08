@@ -12,6 +12,7 @@ public class Grafica {
     Color highscore = new Color(255,255,255,255);
     Color ready_color = new Color(247, 184, 1); // ready text
     Color ghosts_points = new Color(255,255,255);
+    Color color_bg = new Color(0,0,0);
     Color cell_fill_color = new Color(0, 78, 137); //colori della cella
     Color ball_fill_color = new Color(241, 135, 1),ball_border_color = new Color(243, 91, 4); //colori della pallina
 
@@ -91,7 +92,7 @@ public class Grafica {
                             break;
 
                         case "EMPTY":
-                            g.setColor(Color.BLACK);
+                            g.setColor(color_bg);
                             g.fillRect(x, y, blockW, blockH);
                             break;
 
@@ -123,7 +124,7 @@ public class Grafica {
                     //disegna inky
                     if(i==logic.inkyY && j == logic.inkyX){
                         logic.animateInky();
-                        
+
                         //disegna inky
                         g.drawImage(SingleTon.getInstance().inky_CurrentImage, x, y,blockW,blockH, null);
                     }

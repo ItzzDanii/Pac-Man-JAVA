@@ -34,7 +34,6 @@ class MyPanel extends JPanel {
     IntroThread introThread;
     PacManThread pacmanThread;
     BlinkyThread blinkyThread;
-    InkyThread inkyThread;
     AnimateGameThread animateThread = new AnimateGameThread(this,500);
 
     public MyPanel() {
@@ -171,15 +170,12 @@ class MyPanel extends JPanel {
 
             if (pacmanThread != null) pacmanThread.stopThread();
             if (blinkyThread != null) blinkyThread.stopThread();
-            if (inkyThread != null) inkyThread.stopThread();
-
-            inkyThread = new InkyThread(this, SingleTon.getInstance().ghost_vel);
+            
             blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel);
             pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
             
             pacmanThread.start();
             blinkyThread.start();
-            inkyThread.start();
 
             ((javax.swing.Timer)e.getSource()).stop();
         }).start();
@@ -204,11 +200,6 @@ class MyPanel extends JPanel {
             blinkyThread = new BlinkyThread(this,SingleTon.getInstance().ghost_vel);
             blinkyThread.start();
         }
-
-        if(inkyThread == null){
-            inkyThread = new InkyThread(this, SingleTon.getInstance().ghost_vel);
-            inkyThread.start();
-        }
     }
 
     public void levelUp() {
@@ -217,17 +208,14 @@ class MyPanel extends JPanel {
 
         if (blinkyThread != null) blinkyThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
-        if (inkyThread != null) inkyThread.stopThread();
 
         game_logic.initializeMap();
 
         pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel - (SingleTon.getInstance().current_level * 2));
         blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (SingleTon.getInstance().current_level * 2));
-        inkyThread = new InkyThread(this, SingleTon.getInstance().ghost_vel - (SingleTon.getInstance().current_level * 2));
 
         pacmanThread.start();
         blinkyThread.start();
-        inkyThread.start();
 
         repaint();
 }
@@ -236,7 +224,6 @@ class MyPanel extends JPanel {
         if (introThread != null) introThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
         if(blinkyThread!= null) blinkyThread.stopThread();
-        if (inkyThread != null) inkyThread.stopThread();
 
         java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
         if (parentWindow != null) parentWindow.dispose();

@@ -332,7 +332,7 @@ public class Grafica {
         int cellY = 18 * logic.cell_heigth;
 
         SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
-        logic.dir = "dx";
+        logic.pacManDir = "dx";
 
         SingleTon.getInstance().blinky_CurrentImage = SingleTon.getInstance().blinky_left;
         logic.blinkyDirection = 0;

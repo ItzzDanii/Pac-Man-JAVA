@@ -34,7 +34,7 @@ public class Logica{
     int pac_manX,pac_manY; //posizione di pacman
     boolean mouthOpen = true; //animazione di pacman
     int vel = 1; //velocità di pacman
-    String dir; //direzione di pacman
+    String pacManDir; //direzione di pacman
     boolean isReady = true; //intro? (dopo aver caricato la mappa)
     boolean powered = false; //pacman potenziato?
     boolean pacmanDead = false; //pac man morto?
@@ -91,7 +91,7 @@ public class Logica{
 
         this.pac_manX = 13;
         this.pac_manY = 23;
-        this.dir = "dx";
+        this.pacManDir = "dx";
         
         this.blinkyX = 14;
         this.blinkyY = 11;
@@ -351,7 +351,7 @@ public class Logica{
     
     public void changeDir(String nuovaDir) {
          if (!canMove(nuovaDir)) return; //se non si può muovere
-         else dir = nuovaDir;
+         else pacManDir = nuovaDir;
     }
     
     public void eatBall() {
@@ -373,7 +373,7 @@ public class Logica{
 }
     
     public void movePacman() {
-    if (!canMove(dir)) return; // se non si può muovere
+    if (!canMove(pacManDir)) return; // se non si può muovere
     if(isGameOver()|| isLvlCompleted()) return; // se gameover o livello completato
     if(SingleTon.getInstance().pac_lifes<=0){ //se muore
         gameOver = true;
@@ -383,7 +383,7 @@ public class Logica{
         return;
     }
     
-    switch (dir) {
+    switch (pacManDir) {
         case "sx":
             pac_manX-=vel;
             // animazione della bocca
@@ -430,7 +430,7 @@ public class Logica{
         eatBall();
     }
 
-    // === METODI DI BLINKY ===
+    // === METODI DI ANIMAZIONE ===
     public void animateBlinky() {
         if(powered && powerSession > 1000) // in ms - 1000ms ovvero che all'inizio del potenziamento di pac man, diventa bianco-blu
         {
@@ -691,6 +691,7 @@ public class Logica{
         }
     }
 
+    // === METODI DI BLINKY ===
     //! Generato con ChatGPT algoritmo del fantasma !
     public void moveBlinkyBFS(int targetX, int targetY) {
     class Node { int x, y; Node parent; Node(int x,int y,Node p){this.x=x;this.y=y;parent=p;} }
@@ -863,69 +864,7 @@ public class Logica{
     }
 }
 
-    public void moveInkyBFS(int targetX, int targetY) {
-    class Node { int x, y; Node parent; Node(int x,int y,Node p){this.x=x;this.y=y;parent=p;} }
-
-    boolean[][] visited = new boolean[SingleTon.getInstance().ROWS][SingleTon.getInstance().COLS];
-    Queue<Node> queue = new LinkedList<>();
-    queue.add(new Node(inkyX, inkyY, null));
-    visited[inkyY][inkyX] = true;
-
-    Node endNode = null;
-
-    while(!queue.isEmpty()){
-        Node current = queue.poll();
-        if(current.x == targetX && current.y == targetY){ endNode = current; break; }
-
-        String[] directions = {"su","giu","sx","dx"};
-        for(String dir : directions){
-            int nx = current.x;
-            int ny = current.y;
-
-            switch(dir){
-                case "su": 
-                    ny--; 
-                    break;
-
-                case "giu": 
-                    ny++; 
-                    break;
-
-                case "sx": 
-                    nx--; 
-                    break;
-
-                case "dx": 
-                    nx++;
-                    break;
-            }
-
-            if(nx >=0 && nx < SingleTon.getInstance().COLS && ny >=0 && ny < SingleTon.getInstance().ROWS && !visited[ny][nx]){
-                String cell = SingleTon.getInstance().game_map[ny][nx];
-                if(!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2")){
-                    visited[ny][nx] = true;
-                    queue.add(new Node(nx, ny, current));
-                }
-            }
-        }
-    }
-
-    if(endNode != null){
-        //Risaliamo il percorso fino alla prima mossa
-        Node moveNode = endNode;
-        while(moveNode.parent != null && moveNode.parent.parent != null){
-            moveNode = moveNode.parent;
-        }
-        //Esegui il movimento
-        if(moveNode.x > inkyX){ inkyX++; inkyDirection = 2; }
-        if(moveNode.x < inkyX){ inkyX--; inkyDirection = 0; }
-        if(moveNode.y > inkyY){ inkyY++; inkyDirection = 3; }
-        if(moveNode.y < inkyY){ inkyY--; inkyDirection = 1; }
-
-        animateInky();
-    }
-}
-    
+    // === METODI DI INKY ===
     //! Generato con ChatGPT algoritmo del fantasma !
     public void moveInky(boolean scatterMode) {
         if (!inkyReleased) {
@@ -1039,6 +978,120 @@ public class Logica{
     }
 }
 
+    public void moveInkyBFS(int targetX, int targetY) {
+    // Classe interna per gestire i nodi del percorso
+    class Node { 
+        int x, y; 
+        Node parent; 
+        Node(int x, int y, Node p) { this.x = x; this.y = y; this.parent = p; } 
+    }
+
+    boolean[][] visited = new boolean[SingleTon.getInstance().ROWS][SingleTon.getInstance().COLS];
+    Queue<Node> queue = new LinkedList<>();
+    
+    // Partenza dalla posizione attuale di Inky
+    queue.add(new Node(inkyX, inkyY, null));
+    visited[inkyY][inkyX] = true;
+
+    Node endNode = null;
+
+    // --- FASE 1: RICERCA DEL TARGET ---
+    while (!queue.isEmpty()) {
+        Node current = queue.poll();
+        
+        // Se abbiamo trovato il target, salviamo il nodo e usciamo
+        if (current.x == targetX && current.y == current.y) { 
+            endNode = current; 
+            break; 
+        }
+
+        // Direzioni possibili: su, giu, sx, dx
+        int[][] dirs = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
+        for (int[] d : dirs) {
+            int nx = current.x + d[0];
+            int ny = current.y + d[1];
+
+            // Controllo confini mappa
+            if (nx >= 0 && nx < SingleTon.getInstance().COLS && ny >= 0 && ny < SingleTon.getInstance().ROWS) {
+                if (!visited[ny][nx]) {
+                    String cell = SingleTon.getInstance().game_map[ny][nx];
+                    
+                    // Controllo collisione con altri fantasmi (metodo che abbiamo creato prima)
+                    boolean occupato = isOccupato(nx, ny, "INKY");
+
+                    // Inky può passare se non è un muro/porta e la cella non è occupata da un alleato
+                    if (!cell.equals("WALL") && !cell.equals("DOOR1") && !cell.equals("DOOR2") && !occupato) {
+                        visited[ny][nx] = true;
+                        queue.add(new Node(nx, ny, current));
+                    }
+                }
+            }
+        }
+    }
+
+    // --- FASE 2: ESECUZIONE DELLA MOSSA ---
+    if (endNode != null) {
+        Node moveNode = endNode;
+        
+        // Risaliamo l'albero fino a trovare il primo passo dopo la posizione attuale
+        // Il nodo che ha come parent il nodo di partenza (null) è quello in cui dobbiamo muoverci
+        while (moveNode.parent != null && moveNode.parent.parent != null) {
+            moveNode = moveNode.parent;
+        }
+
+        // Aggiorniamo le coordinate e la direzione per l'animazione
+        if (moveNode.x > inkyX) { inkyX++; inkyDirection = 2; }      // Destra
+        else if (moveNode.x < inkyX) { inkyX--; inkyDirection = 0; } // Sinistra
+        else if (moveNode.y > inkyY) { inkyY++; inkyDirection = 3; } // Giù
+        else if (moveNode.y < inkyY) { inkyY--; inkyDirection = 1; } // Su
+
+        animateInky();
+    } else {
+        // PIANO B: Se il BFS fallisce (es. circondato da fantasmi), prova a muoversi a caso
+        muoviInkyACaso(); 
+    }
+}
+    
+    public void muoviInkyACaso() {
+    // Definiamo le direzioni: 0=sx, 1=su, 2=dx, 3=giu
+    int[] dx = {-1, 0, 1, 0};
+    int[] dy = {0, -1, 0, 1};
+    
+    // Creiamo una lista di direzioni (0,1,2,3) e mescoliamola
+    java.util.List<Integer> directions = new java.util.ArrayList<>(java.util.Arrays.asList(0, 1, 2, 3));
+    java.util.Collections.shuffle(directions);
+
+    for (int dir : directions) {
+        int nx = inkyX + dx[dir];
+        int ny = inkyY + dy[dir];
+
+        // Controllo confini mappa
+        if (nx >= 0 && nx < SingleTon.getInstance().COLS && ny >= 0 && ny < SingleTon.getInstance().ROWS) {
+            String cell = SingleTon.getInstance().game_map[ny][nx];
+            
+            // In questo caso di emergenza, controlliamo solo che non sia un muro.
+            // Possiamo essere meno restrittivi sulle porte per permettergli di sbloccarsi.
+            if (!cell.equals("WALL")) {
+                inkyX = nx;
+                inkyY = ny;
+                inkyDirection = dir;
+                animateInky();
+                return; // Trovata una mossa, esce dal metodo
+            }
+        }
+    }
+    // Se arriva qui, è proprio incastrato tra i muri (rarissimo), rimarrà fermo per un frame.
+}
+    
+    // === ALTRI METODI ===
+    public boolean isOccupato(int nx, int ny, String ghostName) {
+        if (!ghostName.equals("BLINKY") && !blinkyDead && nx == blinkyX && ny == blinkyY) return true;
+        if (!ghostName.equals("INKY") && !inkyDead && nx == inkyX && ny == inkyY) return true;
+        if (!ghostName.equals("PINKY") && !pinkyDead && nx == pinkyX && ny == pinkyY) return true;
+        if (!ghostName.equals("CLYDE") && !clydeDead && nx == clydeX && ny == clydeY) return true;
+        return false;
+    }
+    
     public void resetPositions() {
     if (isGameOver()) {
         SingleTon.getInstance().intro.stop();
@@ -1071,7 +1124,7 @@ public class Logica{
 
         // Direzione di default
         SingleTon.getInstance().pac_man_CurrentImage = SingleTon.getInstance().pac_right;
-        dir = "dx";
+        pacManDir = "dx";
 
         blinkyX = 14;
         blinkyY = 11;
@@ -1122,6 +1175,7 @@ public class Logica{
         }).start();
     }
 }
+    
     public void controlloClear() {
         //tutte le palline/power-up mangiati
         level_completed=true;

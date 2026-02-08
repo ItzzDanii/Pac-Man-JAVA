@@ -17,8 +17,8 @@ public class SingleTon {
         this.current_level = 1;
         this.pac_lifes = 3;
         this.file_max_score = "max_score.txt";
-        this.pac_vel = 180; 
-        this.ghost_vel = 190;
+        this.pac_vel = 150; 
+        this.ghost_vel = pac_vel + 10;
         this.max_score = loadMaxScore();
 
         //Chiesto a chat come caricare un custom font

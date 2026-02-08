@@ -14,6 +14,12 @@ public class AnimateGameThread extends Thread {
     public void run() {
         while (true) {
             try {
+                if(pan.game_logic.blinkyDead){
+                    if(animate)
+                        pan.game_graphic.ghosts_points = new Color(149, 213, 178);
+                else pan.game_graphic.ghosts_points = new Color(82, 183, 136);
+                }
+
                 if (SingleTon.getInstance().score >= SingleTon.getInstance().max_score && SingleTon.getInstance().max_score != 0) {
                     if (animate)
                         pan.game_graphic.highscore = new Color(112, 224, 0);

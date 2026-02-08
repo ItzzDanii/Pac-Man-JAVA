@@ -88,15 +88,20 @@ class MyPanel extends JPanel {
 
             Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 20);
             g.setFont(sizeFont);
-            g.setColor(Color.WHITE);
+            g.setColor(Color.RED);
             g.drawString("GAME OVER!",(screenW/2)-90, (screenH/2));
             
             String mess_score = "";
 
-            if(SingleTon.getInstance().score >= SingleTon.getInstance().max_score)
+            if(SingleTon.getInstance().score >= SingleTon.getInstance().max_score){
                 mess_score = "New max score: "+Integer.toString(SingleTon.getInstance().loadMaxScore());
-            else if(!SingleTon.getInstance().newRecord)
+                g.setColor(game_graphic.highscore);
+            }
+                
+            else if(!SingleTon.getInstance().newRecord){
+                g.setColor(game_graphic.UPscore);
                 mess_score = "Score: "+Integer.toString(SingleTon.getInstance().score);
+            }
 
             g.drawString(mess_score, (screenW/2)-90, (screenH/2)+30);
 
@@ -118,7 +123,7 @@ class MyPanel extends JPanel {
         if (game_logic.blinkyDead) {
             Font sizeFont = emulogicFont.deriveFont(Font.BOLD, 12);
             g.setFont(sizeFont);
-            g.setColor(Color.WHITE);
+            g.setColor(game_graphic.ghosts_points);
             g.drawString("200", (game_logic.blinkyX * SingleTon.getInstance().COLS + 50), (game_logic.blinkyY * SingleTon.getInstance().ROWS + 50));
             game_logic.pointsTimer--;
         }
@@ -130,6 +135,9 @@ class MyPanel extends JPanel {
         game_logic.gameOver = false;
         game_logic.firstTime = true;
         game_logic.introPlayed = false;
+
+        SingleTon.getInstance().pac_vel = 170; 
+        SingleTon.getInstance().ghost_vel = SingleTon.getInstance().pac_vel + 10;
 
         game_logic.initializeMap();
         game_logic.resetPositions();
@@ -147,9 +155,9 @@ class MyPanel extends JPanel {
             if (pacmanThread != null) pacmanThread.stopThread();
             if (blinkyThread != null) blinkyThread.stopThread();
 
-            blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (20*SingleTon.getInstance().current_level));
+            blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel);
             
-            pacmanThread = new PacManThread(this, 180);
+            pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
             pacmanThread.start();
             blinkyThread.start();
 
@@ -163,9 +171,12 @@ class MyPanel extends JPanel {
         if(game_logic.isGameOver())
             return;
 
+        SingleTon.getInstance().pac_vel = 170; 
+        SingleTon.getInstance().ghost_vel = SingleTon.getInstance().pac_vel + 10;
+
         game_logic.isReady = false;
         if (pacmanThread == null) {
-            pacmanThread = new PacManThread(this, 180);
+            pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
             pacmanThread.start();
         }
 
@@ -179,16 +190,13 @@ class MyPanel extends JPanel {
         if(game_logic.isGameOver())
             return;
 
-        SingleTon.getInstance().ghost_vel -= 50;
-        if (SingleTon.getInstance().ghost_vel < 50) SingleTon.getInstance().ghost_vel = 50;
-
         if (blinkyThread != null) blinkyThread.stopThread();
         if (pacmanThread != null) pacmanThread.stopThread();
 
         game_logic.initializeMap();
 
-        pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel);
-        blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel);
+        pacmanThread = new PacManThread(this, SingleTon.getInstance().pac_vel - (SingleTon.getInstance().current_level * 2));
+        blinkyThread = new BlinkyThread(this, SingleTon.getInstance().ghost_vel - (SingleTon.getInstance().current_level * 2));
 
         pacmanThread.start();
         blinkyThread.start();

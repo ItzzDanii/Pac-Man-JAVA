@@ -11,6 +11,7 @@ public class Grafica {
     Color UPscore = new Color(255,255,255,255); // hud
     Color highscore = new Color(255,255,255,255);
     Color ready_color = new Color(247, 184, 1); // ready text
+    Color ghosts_points = new Color(255,255,255);
     Color cell_fill_color = new Color(0, 78, 137); //colori della cella
     Color ball_fill_color = new Color(241, 135, 1),ball_border_color = new Color(243, 91, 4); //colori della pallina
 

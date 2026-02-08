@@ -222,100 +222,16 @@ public class Grafica {
                 
                     //disegna clyde
                     if(i==logic.clydeY && j == logic.clydeX){
-                        //se muore,occhi
-                        if (logic.clydeDead) {
-                            switch (logic.clydeDirection) {
-                                case 0: SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_left; break;
-                                case 1: SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_up; break;
-                                case 2: SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_right; break;
-                                case 3: SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().dead_down; break;
-                            }
-                        }
-                        else if (logic.powered) {
-                            //altrimenti se debole,blu
-                            if (logic.clydeAnimate)
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
-                            else
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().vul_ghost_blue_2;
-                        }
-                        else {
-                            //altrimenti normale
-                            switch (logic.clydeDirection) {
-                                case 0: 
-                                if(logic.clydeAnimate)
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_left ;
-                                else SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_left_2;
-                                break;
+                        logic.animateClyde();
 
-                                case 1: 
-                                if(logic.clydeAnimate)
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_up ;
-                                else SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_up_2;
-                                break;
-
-                                case 2: 
-                                if(logic.clydeAnimate)
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_right ;
-                                else SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_right_2;
-                                break;
-
-                                case 3: 
-                                if(logic.clydeAnimate)
-                                SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_down ;
-                                else SingleTon.getInstance().clyde_CurrentImage = SingleTon.getInstance().clyde_down_2;
-                                break;
-                            }
-                        }
-                        //disegna clyde
+                        //disegna pinky
                         g.drawImage(SingleTon.getInstance().clyde_CurrentImage, x, y,blockW,blockH, null);
                     }
                 
                     //disegna pinky
                     if(i==logic.pinkyY && j == logic.pinkyX){
-                        //se muore,occhi
-                        if (logic.pinkyDead) {
-                            switch (logic.pinkyDirection) {
-                                case 0: SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_left; break;
-                                case 1: SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_up; break;
-                                case 2: SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_right; break;
-                                case 3: SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().dead_down; break;
-                            }
-                        }
-                        else if (logic.powered) {
-                            //altrimenti se debole,blu
-                            if (logic.pinkyAnimate)
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue;
-                            else
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().vul_ghost_blue_2;
-                        }
-                        else {
-                            //altrimenti normale
-                            switch (logic.pinkyDirection) {
-                                case 0: 
-                                if(logic.pinkyAnimate)
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_left ;
-                                else SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_left_2;
-                                break;
+                        logic.animatePinky();
 
-                                case 1: 
-                                if(logic.pinkyAnimate)
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_up ;
-                                else SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_up_2;
-                                break;
-
-                                case 2: 
-                                if(logic.pinkyAnimate)
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_right ;
-                                else SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_right_2;
-                                break;
-
-                                case 3: 
-                                if(logic.pinkyAnimate)
-                                SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_down ;
-                                else SingleTon.getInstance().pinky_CurrentImage = SingleTon.getInstance().pinky_down_2;
-                                break;
-                            }
-                        }
                         //disegna pinky
                         g.drawImage(SingleTon.getInstance().pinky_CurrentImage, x, y,blockW,blockH, null);
                     }

@@ -14,6 +14,18 @@ public class PacManThread extends Thread {
     public void run() {
         while (running) {
             if (!logica.isReady && !logica.isGameOver()) {
+                if(logica.numeroPalle() < 200 && !logica.inkyReleased){
+                    logica.inkyReleased=true;
+                    logica.inkyY -= 3;
+                }
+                if(logica.numeroPalle() < 190 && !logica.pinkyReleased){
+                    logica.pinkyReleased=true;
+                    logica.pinkyY -= 3;
+                }
+                if(logica.numeroPalle() < 180 && !logica.clydeReleased){
+                    logica.clydeReleased=true;
+                    logica.clydeY -= 3;
+                }
                 logica.movePacman();
                 pannello.repaint();      
             }

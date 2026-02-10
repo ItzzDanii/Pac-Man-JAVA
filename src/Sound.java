@@ -1,5 +1,3 @@
-// ! Generato con ChatGPT per gestione Sound !
-
 import javax.sound.sampled.*;
 import java.io.File;
 
@@ -9,11 +7,31 @@ public class Sound {
 
     public Sound(String path) {
         try {
-            AudioInputStream audioIn = AudioSystem.getAudioInputStream(new File(path));
+            AudioInputStream originalStream =
+                    AudioSystem.getAudioInputStream(new File(path));
+
+            AudioFormat baseFormat = originalStream.getFormat();
+
+            AudioFormat decodedFormat = new AudioFormat(
+                    AudioFormat.Encoding.PCM_SIGNED,
+                    baseFormat.getSampleRate(),
+                    16,
+                    baseFormat.getChannels(),
+                    baseFormat.getChannels() * 2,
+                    baseFormat.getSampleRate(),
+                    false // little-endian
+            );
+
+            AudioInputStream decodedStream =
+                    AudioSystem.getAudioInputStream(decodedFormat, originalStream);
+
             clip = AudioSystem.getClip();
-            clip.open(audioIn);
+            clip.open(decodedStream);
+
         } catch (Exception e) {
+            System.err.println("Errore caricamento audio: " + path);
             e.printStackTrace();
+            clip = null;
         }
     }
 
@@ -21,18 +39,20 @@ public class Sound {
         if (clip == null) return;
 
         if (clip.isRunning())
-            clip.stop();   // evita sovrapposizioni
+            clip.stop();
 
-        clip.setFramePosition(0); // riparte da inizio
+        clip.setFramePosition(0);
         clip.start();
     }
 
     public void stop() {
-        clip.stop();
+        if (clip != null)
+            clip.stop();
     }
-    
+
     public boolean isFinished() {
         if (clip == null) return true;
-        return !clip.isRunning() && clip.getFramePosition() >= clip.getFrameLength();
+        return !clip.isRunning() &&
+               clip.getFramePosition() >= clip.getFrameLength();
     }
 }
